@@ -1,0 +1,24 @@
+body {
+    margin: 0 auto;
+    max-width: 400px;
+    background-color: rgb(79, 79, 79);
+    color: #fff;
+}
+
+h1 {
+    border-bottom: 4px double #ccc;
+}
+
+nav {
+    border-bottom: 1px solid #ccc;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}

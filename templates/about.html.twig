@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block body %}
+    <h1>
+        About
+    </h1>
+    <p>
+        An image which can be clicked on.
+    </p>
+    <a href="{{ asset('img/glider.svg') }}">
+        <img src="{{ asset('img/glider.svg') }}" alt="" />
+    </a>
+{% endblock %}

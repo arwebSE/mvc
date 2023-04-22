@@ -1,0 +1,25 @@
+{
+    "restoreTerminals.terminals": [
+        {
+          "splitTerminals": [
+            {
+              "name": "php server",
+              "commands": ["yarn php-server"]
+            },
+            {
+              "name": "webpack",
+              "commands": ["yarn watch"]
+            },
+          ]
+        },
+        {
+          "splitTerminals": [
+            {
+              "name": "term",
+              "commands": ["echo 'hello'"]
+            }
+          ]
+        }
+      ]
+    
+}
