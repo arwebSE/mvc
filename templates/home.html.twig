@@ -5,15 +5,19 @@
 {% endblock %}
 
 {% block body %}
-    <h1>
-        August M. Rosenqvist
-    </h1>
+    <div class="center">
+        <h1 class="title">
+            August M. Rosenqvist
+        </h1>
+    </div>
     <div>
-        <div>
-            <img src="{{ asset('img/profile.jpg') }}" alt="My Photo" />
+        <div class="center">
+            <img class="profile"
+                src="{{ asset('img/profile.jpg') }}"
+                alt="My Photo" />
         </div>
-        <div>
-            <p>
+        <div class="aboutText">
+            <p class="broadText">
                 Hi, my name is August and I'm a junior developer based in
                 Stockholm, Sweden.
                 <br /><br />

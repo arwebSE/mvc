@@ -21,17 +21,25 @@
         {% endblock %}
     </head>
     <body>
-        <header class="site-header"
-            style="background-image: url({{ asset('img/background.jpg') }})">
-            <span class="site-title">mvc auro17</span>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="{{ path('home') }}">Home</a></li>
-                <li><a href="{{ path('about') }}">About</a></li>
-                <li><a href="{{ path('lucky_number') }}">Lucky number</a></li>
-            </ul>
-        </nav>
+        <div class="shadowed">
+            <header class="site-header"
+                style="background-image: url({{
+                asset(
+                    'img/background.jpg'
+                )
+                }})">
+                <span class="site-title">mvc auro17</span>
+            </header>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('home') }}">Home</a></li>
+                    <li><a href="{{ path('about') }}">About</a></li>
+                    <li>
+                        <a href="{{ path('lucky_number') }}">Lucky number</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
         {% block body %}
 
