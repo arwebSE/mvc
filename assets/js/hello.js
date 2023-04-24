@@ -1,3 +1,3 @@
 export default () => {
-    return `Yo yo - welcome to Encore!!!`
-}
+    return `Yo yo - welcome to Encore!!!`;
+};
