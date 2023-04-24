@@ -19,4 +19,22 @@ class MainController extends AbstractController
     {
         return $this->render('about.html.twig');
     }
+
+    #[Route("/report", name: "report")]
+    public function report(): Response
+    {
+        return $this->render('report.html.twig');
+    }
+
+    #[Route("/lucky", name: "lucky")]
+    public function number(): Response
+    {
+        $number = random_int(1, 6);
+
+        $data = [
+            'number' => $number
+        ];
+
+        return $this->render('lucky_number.html.twig', $data);
+    }
 }

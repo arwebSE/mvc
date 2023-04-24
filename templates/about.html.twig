@@ -4,17 +4,31 @@
     About
 {% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>
-        About
+        Om kursen MVC
     </h1>
     <p>
-        An image which can be clicked on.
+        Kursen Objektorienterade webbteknologier, a.k.a. mvc, fokuserar på
+        objektorienterade programmeringstekniker i programmeringsspråket PHP.
+        <br /><br />
+        Klassiska objektorienterade konstruktioner hanteras tillsammans med objektorienterad
+        programmering i webbaserat ramverk tillsammans med databaser samt enhetstestning.
     </p>
-    <a href="https://github.com/dbwebb-se/mvc">
-        <img src="{{ asset('img/mvc.png') }}" alt="mvc leaf logo" />
-        Course GitHub Repo
-    </a>
+{% endblock %}
 
-    <a></a>
+{% block sidebar %}
+    <aside id="sidebar">
+        <h1>
+            Links
+        </h1>
+        <a href="https://github.com/dbwebb-se/mvc" class="image-link">
+            <img src="{{ asset('img/mvc.png') }}" alt="mvc leaf logo" />
+            <span class="link-text">Course Repo</span>
+        </a>
+        <a href="https://github.com/arwebSE/mvc" class="image-link">
+            <img src="{{ asset('img/github.png') }}" alt="github logo" />
+            <span class="link-text">My Repo</span>
+        </a>
+    </aside>
 {% endblock %}
