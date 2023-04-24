@@ -35,6 +35,6 @@ class MainController extends AbstractController
             'number' => $number
         ];
 
-        return $this->render('lucky_number.html.twig', $data);
+        return $this->render('lucky.html.twig', $data);
     }
 }
