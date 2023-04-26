@@ -1,4 +1,6 @@
 {
+    "name": "auro17/mvc",
+    "description": "A Symfony project created for the course MVC.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -95,7 +97,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "csfix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php fix src tests",
+        "csfix:dry": "tools/php-cs-fixer/vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php fix src tests --dry-run -v"
     },
     "conflict": {
         "symfony/symfony": "*"
