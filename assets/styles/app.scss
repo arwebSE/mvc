@@ -245,6 +245,16 @@ nav {
             background-color: #d32f2f; /* Even darker red */
         }
     }
+    &.success {
+        background-color: #4caf50; /* Green */
+        color: #fff;
+        &:hover {
+            background-color: #43a047; /* Darker green */
+        }
+        &:active {
+            background-color: #388e3c; /* Even darker green */
+        }
+    }
 }
 
 input[type="number"] {
@@ -452,11 +462,12 @@ footer {
         font-size: 0.8em;
         &.top {
             top: 23px;
-            left: 2px;
+            right: 2px;
+            transform: rotate(180deg);
         }
         &.bottom {
             bottom: 23px;
-            right: 2px;
+            left: 2px;
         }
     }
 }

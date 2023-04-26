@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game - Draw Card
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Card Game
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    {% if drawnCard is not null %}
+        <h2>
+            Drawn Card:
+        </h2>
+        <div>
+            {% set suit = drawnCard.getSuit() %}
+            {% set suit_symbol = suit == 'H'
+                ? '♥'
+                : suit == 'D' ? '♦' : suit == 'C' ? '♣' : '♠'
+            %}
+            <span class="card {{
+                suit == 'H' or suit == 'D'
+                    ? 'red'
+                    : 'black'
+                }}">
+                <span class="rank">{{ drawnCard.getRank() }}</span>
+                <span class="suit top">{{ suit_symbol }}</span>
+                <span class="suit bottom">{{ suit_symbol }}</span>
+            </span>
+        </div>
+    {% endif %}
+
+    <h3>
+        Cards Left in Deck: {{ cardsLeft }}
+    </h3>
+
+    <br /><br />
+
+    {% if drawnCard is not null %}
+        <a class="button primary" href="{{ path('card_deck_draw') }}">
+            Draw Another Card
+        </a>
+
+        <a class="button success"
+            href="{{
+            path(
+                'card_deck_draw_multiple',
+                {
+                    number: 5
+                }
+            )
+            }}">
+            Draw 5 Cards
+        </a>
+
+        <a class="button success"
+            href="{{
+            path(
+                'card_deck_draw_multiple',
+                {
+                    number: 10
+                }
+            )
+            }}">
+            Draw 10 Cards
+        </a>
+    {% endif %}
+
+    <a class="button" href="{{ path('card_start') }}">Return to game</a>
+{% endblock %}

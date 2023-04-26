@@ -13,7 +13,7 @@ class DeckOfCards
 
         foreach ($suits as $suit) {
             foreach ($ranks as $rank) {
-                $this->cards[] = new CardGraphic($suit, $rank);
+                $this->cards[] = new Card($suit, $rank);
             }
         }
     }
@@ -28,10 +28,12 @@ class DeckOfCards
         return count($this->cards);
     }
 
-    public function drawCard(): ?CardGraphic
+    public function drawCard(): ?Card
     {
         if ($this->countCards() > 0) {
-            return $this->cards[0];
+            $card = $this->cards[0];
+            array_shift($this->cards); // remove the drawn card from the deck
+            return $card;
         }
         return null;
     }

@@ -22,4 +22,9 @@ class Card
     {
         return $this->rank;
     }
+
+    public function getAsString(): string
+    {
+        return $this->rank . $this->suit;
+    }
 }
