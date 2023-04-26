@@ -67,5 +67,9 @@
         </a>
     {% endif %}
 
-    <a class="button" href="{{ path('card_start') }}">Return to game</a>
+    <a class="button danger" href="{{ path('card_deck_shuffle') }}">
+        Shuffle Deck
+    </a>
+
+    <a class="button" href="{{ path('card_start') }}">Return to Start</a>
 {% endblock %}

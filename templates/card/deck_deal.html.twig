@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game - Deal Cards
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Card Game
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    {% if hands is not empty %}
+        <h2>
+            Cards in Each Player's Hand:
+        </h2>
+        <div class="card-grid">
+            {% for hand in hands %}
+                <div class="card-column">
+                    <div class="player-label">
+                        Player {{ loop.index }}
+                    </div>
+                    <div class="card-row">
+                        {% for card in hand.cards %}
+                            {% set suit = card.getSuit() %}
+                            {% set suit_symbol = suit == 'H'
+                                ? '♥'
+                                : suit == 'D' ? '♦' : suit == 'C' ? '♣' : '♠'
+                            %}
+                            <span class="card {{
+                                suit == 'H' or suit == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">{{ suit_symbol }}</span>
+                                <span class="suit bottom">
+                                    {{ suit_symbol }}
+                                </span>
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h3>
+        Cards Left in Deck: {{ cardsLeft }}
+    </h3>
+
+    <br /><br />
+
+    <form action="{{ path('card_deck_deal_post') }}" method="post">
+        <label for="players">Number of Players:</label>
+        <input type="number"
+            name="players"
+            id="players"
+            value="{{ players }}"
+            min="1"
+            max="52" />
+
+        <label for="cards">Number of Cards:</label>
+        <input type="number"
+            name="cards"
+            id="cards"
+            value="{{ cards }}"
+            min="1"
+            max="52" />
+        <br />
+        {% if cardsLeft > 0 %}
+            <input class="button primary" type="submit" value="Deal Cards" />
+            <a class="button success" href="{{ path('card_deck_draw') }}">
+                Draw a Card
+            </a>
+        {% else %}
+            <input class="button primary"
+                type="submit"
+                value="Deal Cards"
+                disabled />
+
+            <button class="button success"
+                href="{{ path('card_deck_draw') }}"
+                disabled>
+                Draw a Card
+            </button>
+        {% endif %}
+
+        <a class="button danger" href="{{ path('card_deck_shuffle') }}">
+            Shuffle Again
+        </a>
+        <a class="button" href="{{ path('card_start') }}">Return to Start</a>
+    </form>
+{% endblock %}

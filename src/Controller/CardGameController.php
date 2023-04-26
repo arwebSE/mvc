@@ -20,25 +20,6 @@ class CardGameController extends AbstractController
         return $this->render('card/home.html.twig');
     }
 
-    #[Route("/game/card/init", name: "card_init_get", methods: ['GET'])]
-    public function init(): Response
-    {
-        return $this->render('card/init.html.twig');
-    }
-
-    #[Route("/game/card/init", name: "card_init_post", methods: ['POST'])]
-    public function initCallback(
-        Request $request,
-        SessionInterface $session
-    ): Response {
-        $deck = new DeckOfCards();
-        $deck->shuffle();
-
-        $session->set("card_deck", $deck);  // NEW SHUFFLED DECK SESSION
-
-        return $this->redirectToRoute('card_play');
-    }
-
     #[Route("/game/card/deck", name: "card_deck", methods: ['GET'])]
     public function deck(
         SessionInterface $session
@@ -58,10 +39,13 @@ class CardGameController extends AbstractController
     #[Route("/game/card/deck/shuffle", name: "card_deck_shuffle")]
     public function shuffleDeck(SessionInterface $session): Response
     {
-        $deck = $session->get("card_deck");
+        $deck = new DeckOfCards();
+        $session->set("card_deck", $deck); // RESET DECK SESSION
         $deck->shuffle();
 
         $data = [
+            'players' => 3,
+            'cards' => 2,
             "sortedDeck" => $deck->getDeck(),
         ];
 
@@ -121,5 +105,73 @@ class CardGameController extends AbstractController
         ];
 
         return $this->render('card/deck_draw_multiple.html.twig', $data);
+    }
+
+    #[Route("/game/card/deck/deal", name: "card_deck_deal_post", methods: ['POST'])]
+    public function dealCardsPost(
+        Request $request
+    ): Response {
+        // Get the number of players and cards per player from the form
+        $players = $request->request->get('players', 3);
+        $cards = $request->request->get('cards', 2);
+
+        // redirect to card_deck_deal route with the number of players and cards per player as parameters
+        return $this->redirectToRoute('card_deck_deal', [
+            'players' => $players,
+            'cards' => $cards,
+        ]);
+    }
+
+    #[Route("/game/card/deck/deal/{players}/{cards}", name: "card_deck_deal",  methods: ['GET'])]
+    public function dealCards(int $players, int $cards, SessionInterface $session): Response
+    {
+        $deck = $session->get("card_deck");
+
+        $hands = [];
+        $handData = [];
+
+        // Check if there are enough cards in the deck for the deal
+        $cardsLeft = $deck->countCards();
+        if ($cardsLeft < $players * $cards) {
+            $this->addFlash(
+                'warning',
+                'Not enough cards left in the deck for the deal!'
+            );
+        } else {
+            // Deal cards to each player and create CardHand objects to hold the cards
+
+            for ($i = 0; $i < $players; $i++) {
+                $hand = new CardHand();
+                for ($j = 0; $j < $cards; $j++) {
+                    $card = $deck->drawCard();
+                    $hand->addCard($card);
+                }
+                $hands[] = $hand;
+            }
+
+            // Save the updated deck and hands to the session
+            $session->set("card_deck", $deck);
+            $session->set("card_hands", $hands);
+
+            // Prepare data to display the cards in each player's hand
+
+            foreach ($hands as $hand) {
+                $handData[] = [
+                    "cards" => $hand->getCards(),
+                ];
+            }
+        }
+
+        $cardsLeft = $deck->countCards();
+
+        // Render the template to display the cards in each player's hand and the cards left in the deck
+        $data = [
+            "hands" => $handData,
+            "cardsLeft" => $cardsLeft,
+            'players' => $players,
+            'cards' => $cards,
+        ];
+
+        return $this->render('card/deck_deal.html.twig', $data);
     }
 }
