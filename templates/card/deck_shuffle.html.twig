@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Card Game - Deck
+    Card Game - Shuffled Deck
 {% endblock %}
 
 {% block content %}
@@ -9,15 +9,11 @@
         Card Game
     </h1>
     <h2>
-        Deck:
+        Shuffled Deck:
     </h2>
     <div>
-        {% set prevSuit = '' %}
         {% for card in sortedDeck %}
             {% set suit = card.getSuit() %}
-            {% if prevSuit != suit and prevSuit != '' %}
-                <br />
-            {% endif %}
             {% set suit_symbol = suit == 'H'
                 ? '♥'
                 : suit == 'D' ? '♦' : suit == 'C' ? '♣' : '♠'
@@ -31,14 +27,13 @@
                 <span class="suit top">{{ suit_symbol }}</span>
                 <span class="suit bottom">{{ suit_symbol }}</span>
             </span>
-            {% set prevSuit = suit %}
         {% endfor %}
     </div>
 
     <br /><br />
 
     <a class="button primary" href="{{ path('card_deck_shuffle') }}">
-        Shuffle Deck
+        Shuffle Again
     </a>
 
     <a class="button" href="{{ path('card_start') }}">Return to game</a>

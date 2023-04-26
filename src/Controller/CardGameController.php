@@ -28,6 +28,19 @@ class CardGameController extends AbstractController
         return $this->render('card/deck.html.twig', $data);
     }
 
+    #[Route("/game/card/deck/shuffle", name: "card_deck_shuffle")]
+    public function shuffleDeck(SessionInterface $session): Response
+    {
+        $deck = $session->get("card_deck");
+        $deck->shuffle();
+
+        $data = [
+            "sortedDeck" => $deck->getDeck(),
+        ];
+
+        return $this->render('card/deck_shuffle.html.twig', $data);
+    }
+
     #[Route("/game/card", name: "card_start")]
     public function home(): Response
     {
