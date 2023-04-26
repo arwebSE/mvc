@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Pig Start
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Pig Game [START]
+    </h1>
+
+    <p>
+        How many dice do you want to have in your dice hand when playing the
+        game?
+    </p>
+
+    <form method="post" action="">
+        <input class=""
+            type="number"
+            name="num_dice"
+            min="1"
+            max="99"
+            value="1" />
+        <input class="button primary"
+            type="submit"
+            name="do_it"
+            value="Start playing" />
+    </form>
+{% endblock %}

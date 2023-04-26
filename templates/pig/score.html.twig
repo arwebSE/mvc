@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Pig Score
+{% endblock %}
+
+{% set restartUrl = path('pig_init_get') %}
+
+{% block content %}
+    <h1>
+        Pig Game [END]
+    </h1>
+
+    <p>
+        You reached over 100 points! The game is therefore over.
+    </p>
+
+    <p>
+        You rolled a total of {{ pigTotal }} points. And you did it in
+        {{ pigRounds }} rolls.
+    </p>
+
+    <form method="post" action="">
+        <p>
+            <input class="button primary"
+                type="submit"
+                name="restart"
+                value="Play Again"
+                onClick="this.form.action='{{
+                restartUrl
+                }}';this.form.method='get';" />
+        </p>
+    </form>
+{% endblock %}

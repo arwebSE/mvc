@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Playing Pig Game
+{% endblock %}
+
+{% set rollUrl = path('pig_roll') %}
+{% set saveUrl = path('pig_save') %}
+{% set restartUrl = path('pig_init_get') %}
+
+{% block content %}
+    <h1>
+        Pig Game [PLAYING]
+    </h1>
+
+    <p>
+        Roll the dice or save the points you have.
+    </p>
+
+    <p>
+        You are playing with {{ pigDice }} dice.
+    </p>
+
+    <p>
+        {% for value in diceValues %}
+            <span class="die">{{ value }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        Round: {{ pigRound }}
+    </p>
+    <p>
+        Total: {{ pigTotal }}
+    </p>
+
+    <form method="post" action="">
+        <p>
+            <input class="button primary"
+                type="submit"
+                name="roll"
+                value="Roll"
+                onClick="this.form.action='{{ rollUrl }}';" />
+
+            <input class="button"
+                type="submit"
+                name="save"
+                value="Save"
+                onClick="this.form.action='{{ saveUrl }}';" />
+
+            <input class="button danger"
+                type="submit"
+                name="restart"
+                value="Restart"
+                onClick="this.form.action='{{
+                restartUrl
+                }}';this.form.method='get';" />
+        </p>
+    </form>
+
+    {{ include('flash.html.twig') }}
+{% endblock %}

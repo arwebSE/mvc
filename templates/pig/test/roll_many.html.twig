@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Test Roll
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Roll many dice!
+    </h1>
+
+    <p>
+        You rolled {{ num_dice }} dice. Here are the values of the dice.
+    </p>
+
+    <ul>
+        {% for roll in diceRoll %}
+            <li>{{ roll }}</li>
+        {% endfor %}
+    </ul>
+    <p>
+        Roll multiple dice: <a href="{{
+            path(
+                'test_roll_num_dice',
+                {
+                    num: 5
+                }
+            )
+            }}"
+            class="button primary">
+            Roll 5
+        </a>
+        <a href="{{
+            path(
+                'test_roll_num_dice',
+                {
+                    num: 10
+                }
+            )
+            }}"
+            class="button primary">
+            Roll 10
+        </a>
+    </p>
+
+    <p>
+        Roll a dice hand: <a href="{{
+            path(
+                'test_dicehand',
+                {
+                    num: 5
+                }
+            )
+            }}"
+            class="button">
+            Roll Hand
+        </a>
+    </p>
+
+    <p>
+        Roll a single die again: <a href="{{ path('test_roll_die') }}" class="button">Roll</a>
+    </p>
+{% endblock %}

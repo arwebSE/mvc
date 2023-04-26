@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Test Roll
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Roll a Die
+    </h1>
+
+    <p>
+        Here is the value of the die.
+    </p>
+
+    <ul>
+        <li>{{ diceString }}</li>
+    </ul>
+
+    <p>
+        Roll Again: <a href="{{ path('test_roll_die') }}" class="button">Roll</a>
+    </p>
+
+    <p>
+        Roll Multiple Dice: <a href="{{
+            path(
+                'test_roll_num_dice',
+                {
+                    num: 5
+                }
+            )
+            }}"
+            class="button primary">
+            Roll 5
+        </a>
+        <a href="{{
+            path(
+                'test_roll_num_dice',
+                {
+                    num: 10
+                }
+            )
+            }}"
+            class="button primary">
+            Roll 10
+        </a>
+    </p>
+{% endblock %}
