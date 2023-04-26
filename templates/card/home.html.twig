@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Card Game
+    </h1>
+
+    <p>
+        This is a classical card game.
+    </p>
+
+    <p>
+        Start the Game: <a href="{{ path('card_init_get') }}" class="button">Play
+            Game</a>
+    </p>
+
+    <style>
+        h1 { border-bottom: 4px double green; }
+    </style>
+{% endblock %}
