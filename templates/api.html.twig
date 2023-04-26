@@ -9,7 +9,22 @@
         About API
     </h1>
     <p>
-        Some text about the APIs here.
+        The following api routes are available:<ul>
+            <li>
+                <a href="{{ path('api_deck') }}">GET /api/deck</a> - returns a list
+                of all cards in the deck
+            </li>
+            <li>POST /api/deck/shuffle - shuffles the deck</li>
+            <li>POST /api/deck/draw - draws a card from the deck</li>
+            <li>
+                POST /api/deck/draw/:number - draws a number of cards from the
+                deck
+            </li>
+            <li>
+                POST /api/deck/deal/:players/:cards - deals a number of cards to
+                a number of players
+            </li>
+        </ul>
     </p>
 {% endblock %}
 
