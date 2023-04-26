@@ -13,6 +13,21 @@ use App\Card\CardHand;
 
 class CardGameController extends AbstractController
 {
+    #[Route("/game/card/deck", name: "card_deck", methods: ['GET'])]
+    public function deck(
+        SessionInterface $session
+    ): Response {
+        $deck = $session->get("card_deck");
+        $deck->sortDeck();
+        $sortedDeck = $deck->getDeck();
+
+        $data = [
+            "sortedDeck" => $sortedDeck,
+        ];
+
+        return $this->render('card/deck.html.twig', $data);
+    }
+
     #[Route("/game/card", name: "card_start")]
     public function home(): Response
     {

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game - Deck
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Card Game
+    </h1>
+    <h2>
+        Deck:
+    </h2>
+    <div>
+        {% set prevSuit = '' %}
+        {% for card in sortedDeck %}
+            {% set suit = card.getSuit() %}
+            {% if prevSuit != suit and prevSuit != '' %}
+                <br />
+            {% endif %}
+            {% set suit_symbol = suit == 'H'
+                ? '♥'
+                : suit == 'D' ? '♦' : suit == 'C' ? '♣' : '♠'
+            %}
+            <span class="card {{
+                suit == 'H' or suit == 'D'
+                    ? 'red'
+                    : 'black'
+                }}">
+                <span class="rank">{{ card.getRank() }}</span>
+                <span class="suit top">{{ suit_symbol }}</span>
+                <span class="suit bottom">{{ suit_symbol }}</span>
+            </span>
+            {% set prevSuit = suit %}
+        {% endfor %}
+    </div>
+
+    <br /><br />
+
+    <a href="{{ path('card_play') }}">Return to game</a>
+{% endblock %}

@@ -23,13 +23,33 @@ class DeckOfCards
         shuffle($this->cards);
     }
 
-    public function drawCard(): ?CardGraphic
-    {
-        return array_shift($this->cards);
-    }
-
     public function countCards(): int
     {
         return count($this->cards);
+    }
+
+    public function drawCard(): ?CardGraphic
+    {
+        if ($this->countCards() > 0) {
+            return $this->cards[0];
+        }
+        return null;
+    }
+
+    public function sortDeck(): void
+    {
+        usort($this->cards, function ($a, $b) {
+            $compareSuit = strcmp($a->getSuit(), $b->getSuit());
+            $rankValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+            $compareRank = array_search($a->getRank(), $rankValues) <=> array_search($b->getRank(), $rankValues);
+
+            return $compareSuit === 0 ? $compareRank : $compareSuit;
+        });
+    }
+
+    public function getDeck(): array
+    {
+        return $this->cards;
     }
 }
