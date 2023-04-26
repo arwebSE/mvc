@@ -13,7 +13,6 @@ use App\Card\CardHand;
 
 class CardGameController extends AbstractController
 {
-
     #[Route("/game/card", name: "card_start")]
     public function home(): Response
     {
@@ -122,7 +121,7 @@ class CardGameController extends AbstractController
         ]);
     }
 
-    #[Route("/game/card/deck/deal/{players}/{cards}", name: "card_deck_deal",  methods: ['GET'])]
+    #[Route("/game/card/deck/deal/{players}/{cards}", name: "card_deck_deal", methods: ['GET'])]
     public function dealCards(int $players, int $cards, SessionInterface $session): Response
     {
         $deck = $session->get("card_deck");

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    API
+{% endblock %}
+
+{% block content %}
+    <h1>
+        About API
+    </h1>
+    <p>
+        Some text about the APIs here.
+    </p>
+{% endblock %}
+
+{% block sidebar %}
+    <aside id="sidebar">
+        <h1>
+            API Links
+        </h1>
+        <a href="{{ path('api_quote') }}">Quotes</a>
+        <br />
+        <a href="{{ path('api_deck') }}">Deck</a>
+    </aside>
+{% endblock %}

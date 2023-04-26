@@ -8,11 +8,19 @@ class CardHand
 
     public function __construct()
     {
+        $this->cards = [];
     }
 
     public function addCard(Card $card): void
     {
         $this->cards[] = $card;
+    }
+
+    public function addCards(array $cards): void
+    {
+        foreach ($cards as $card) {
+            $this->addCard($card);
+        }
     }
 
     public function removeCard(int $index): ?Card

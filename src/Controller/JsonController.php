@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class JsonController
+use App\Card\DeckOfCards;
+use App\Card\CardHand;
+
+class JsonController extends AbstractController
 {
-    #[Route("/api/quote", name: "quote")]
-    public function quoteGenerator(): Response
+    #[Route("/api/quote", name: "api_quote")]
+    public function quoteGenerator(): JsonResponse
     {
         $QUOTES = [
             [
@@ -59,5 +64,147 @@ class JsonController
         );
 
         return $response;
+    }
+
+    #[Route('/api/deck', name: 'api_deck', methods: ['GET'])]
+    public function getDeck(): JsonResponse
+    {
+        $deck = new DeckOfCards();
+        $deck->sortDeck();
+
+        $sortedDeck = $deck->getDeck();
+        $data = [];
+
+        foreach ($sortedDeck as $card) {
+            $data[] = [
+                'rank' => $card->getRank(),
+                'suit' => $card->getSuit(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+
+    #[Route('/api/deck/shuffle', name: 'api_deck_shuffle', methods: ['POST'])]
+    public function postShuffleDeck(SessionInterface $session): JsonResponse
+    {
+        $deck = new DeckOfCards();
+        $deck->shuffle();
+        $session->set("card_deck", $deck); // SAVES SHUFFLED DECK TO SESSION
+
+        $shuffledDeck = $deck->getDeck();
+        $data = [];
+
+        foreach ($shuffledDeck as $card) {
+            $data[] = [
+                'rank' => $card->getRank(),
+                'suit' => $card->getSuit(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/api/deck/draw', name: 'api_deck_draw', methods: ['POST'])]
+    public function drawCard(SessionInterface $session): JsonResponse
+    {
+        $deck = $session->get('card_deck');
+        $drawnCard = $deck->drawCard();
+        $cardsLeft = $deck->countCards();
+
+        $session->set('card_deck', $deck); // UPDATE DECK SESSION
+
+        $data = [];
+        $data[] = [
+            'rank' => $drawnCard->getRank(),
+            'suit' => $drawnCard->getSuit(),
+        ];
+
+        // Check if the card was successfully drawn
+        if ($drawnCard === null) {
+            $data = [
+                'message' => 'No more cards left in the deck!',
+                'cardsLeft' => $cardsLeft,
+            ];
+        } else {
+            $data = [
+                'cards' => [$data],
+                'cardsLeft' => $cardsLeft,
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/api/deck/draw/{number}', name: 'api_deck_draw_multiple', methods: ['POST'])]
+    public function drawMultipleCards(int $number, SessionInterface $session): JsonResponse
+    {
+        $deck = $session->get('card_deck');
+        $cards = [];
+
+        $data = [];
+
+        for ($i = 0; $i < $number; $i++) {
+            $card = $deck->drawCard();
+            if ($card !== null) {
+                $cards[] = $card;
+                $data[] = [
+                    'rank' => $card->getRank(),
+                    'suit' => $card->getSuit(),
+                ];
+            } else {
+                $data = [
+                    'message' => 'No more cards left in the deck!',
+                    'cards' => $cards,
+                    'cardsLeft' => $deck->countCards(),
+                ];
+                return new JsonResponse($data);
+            }
+        }
+
+        $cardsLeft = $deck->countCards();
+        $session->set('card_deck', $deck);
+
+        $data = [
+            'cards' => $data,
+            'cardsLeft' => $cardsLeft,
+        ];
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/api/deck/deal/{players}/{cards}', name: 'api_deck_deal', methods: ['POST'])]
+    public function dealCards(int $players, int $cards, SessionInterface $session): JsonResponse
+    {
+        $deck = $session->get('card_deck');
+
+        if ($deck->countCards() < $players * $cards) {
+            $data = [
+                'message' => 'Not enough cards left in the deck!',
+                'cardsLeft' => $deck->countCards(),
+            ];
+            return new JsonResponse($data);
+        }
+
+        $hands = [];
+        for ($i = 1; $i <= $players; $i++) {
+            $hand = new CardHand();
+            for ($j = 0; $j < $cards; $j++) {
+                $card = $deck->drawCard();
+                $hand->addCard($card);
+            }
+            $hands["Player $i"] = $hand->getCardStrings();
+        }
+
+        $cardsLeft = $deck->countCards();
+        $session->set('card_deck', $deck);
+
+        $data = [
+            'hands' => $hands,
+            'cardsLeft' => $cardsLeft,
+        ];
+
+        return new JsonResponse($data);
     }
 }
