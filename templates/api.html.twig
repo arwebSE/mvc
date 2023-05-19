@@ -14,15 +14,57 @@
                 <a href="{{ path('api_deck') }}">GET /api/deck</a> - returns a list
                 of all cards in the deck
             </li>
-            <li>POST /api/deck/shuffle - shuffles the deck</li>
-            <li>POST /api/deck/draw - draws a card from the deck</li>
+
             <li>
-                POST /api/deck/draw/:number - draws a number of cards from the
-                deck
+                <form action="{{ path('api_deck_shuffle') }}" method="post">
+                    <input class="button primary"
+                        type="submit"
+                        value="POST /api/deck/shuffle" />- shuffles the deck
+                </form>
             </li>
+
             <li>
-                POST /api/deck/deal/:players/:cards - deals a number of cards to
-                a number of players
+                <form action="{{ path('api_deck_draw') }}" method="post">
+                    <input class="button primary"
+                        type="submit"
+                        value="POST /api/deck/draw" />- draws a card from the
+                    deck
+                </form>
+            </li>
+
+            <li>
+                <form action="{{
+                    path(
+                        'api_deck_draw_multiple',
+                        {
+                            number: 10
+                        }
+                    )
+                    }}"
+                    method="post">
+                    <input class="button primary"
+                        type="submit"
+                        value="POST /api/deck/draw/:number" />- draws a number
+                    of cards from the deck (10 cards)
+                </form>
+            </li>
+
+            <li>
+                <form action="{{
+                    path(
+                        'api_deck_deal',
+                        {
+                            players: 2,
+                            cards: 5
+                        }
+                    )
+                    }}"
+                    method="post">
+                    <input class="button primary"
+                        type="submit"
+                        value="POST /api/deck/deal/:players/:cards" />- deals a
+                    number of cards to a number of players (2 players, 5 cards)
+                </form>
             </li>
         </ul>
     </p>

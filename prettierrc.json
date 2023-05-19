@@ -1,0 +1,6 @@
+{
+    "twigSingleQuote": false,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "plugins": ["./node_modules/prettier-plugin-twig-melody"]
+}

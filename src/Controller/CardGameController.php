@@ -13,16 +13,15 @@ use App\Card\CardHand;
 
 class CardGameController extends AbstractController
 {
-    #[Route("/game/card", name: "card_start")]
+    #[Route("/card", name: "card_start")]
     public function home(): Response
     {
-        return $this->render('card/home.html.twig');
+        return $this->render("card/home.html.twig");
     }
 
-    #[Route("/game/card/deck", name: "card_deck", methods: ['GET'])]
-    public function deck(
-        SessionInterface $session
-    ): Response {
+    #[Route("/card/deck", name: "card_deck", methods: ["GET"])]
+    public function deck(SessionInterface $session): Response
+    {
         $deck = new DeckOfCards();
         $session->set("card_deck", $deck); // RESET DECK SESSION
 
@@ -32,10 +31,10 @@ class CardGameController extends AbstractController
         $data = [
             "sortedDeck" => $sortedDeck,
         ];
-        return $this->render('card/deck.html.twig', $data);
+        return $this->render("card/deck.html.twig", $data);
     }
 
-    #[Route("/game/card/deck/shuffle", name: "card_deck_shuffle")]
+    #[Route("/card/deck/shuffle", name: "card_deck_shuffle")]
     public function shuffleDeck(SessionInterface $session): Response
     {
         $deck = new DeckOfCards();
@@ -43,15 +42,15 @@ class CardGameController extends AbstractController
         $deck->shuffle();
 
         $data = [
-            'players' => 3,
-            'cards' => 2,
+            "players" => 3,
+            "cards" => 2,
             "sortedDeck" => $deck->getDeck(),
         ];
 
-        return $this->render('card/deck_shuffle.html.twig', $data);
+        return $this->render("card/deck_shuffle.html.twig", $data);
     }
 
-    #[Route("/game/card/deck/draw", name: "card_deck_draw")]
+    #[Route("/card/deck/draw", name: "card_deck_draw")]
     public function drawCard(SessionInterface $session): Response
     {
         $deck = $session->get("card_deck");
@@ -62,10 +61,7 @@ class CardGameController extends AbstractController
 
         // Check if the card was successfully drawn
         if ($drawnCard === null) {
-            $this->addFlash(
-                'warning',
-                'No more cards left in the deck!'
-            );
+            $this->addFlash("warning", "No more cards left in the deck!");
         }
 
         $data = [
@@ -73,13 +69,21 @@ class CardGameController extends AbstractController
             "cardsLeft" => $cardsLeft,
         ];
 
-        return $this->render('card/deck_draw.html.twig', $data);
+        return $this->render("card/deck_draw.html.twig", $data);
     }
 
-    #[Route('/game/card/deck/draw/{number<\d+>}', name: 'card_deck_draw_multiple', methods: ['GET'])]
-    public function drawMultipleCards(int $number, SessionInterface $session): Response
-    {
-        $deck = $session->get('card_deck');
+    #[
+        Route(
+            "/card/deck/draw/{number<\d+>}",
+            name: "card_deck_draw_multiple",
+            methods: ["GET"]
+        )
+    ]
+    public function drawMultipleCards(
+        int $number,
+        SessionInterface $session
+    ): Response {
+        $deck = $session->get("card_deck");
         $cards = [];
 
         for ($i = 0; $i < $number; $i++) {
@@ -87,43 +91,48 @@ class CardGameController extends AbstractController
             if ($card !== null) {
                 $cards[] = $card;
             } else {
-                $this->addFlash(
-                    'warning',
-                    'No more cards left in the deck!'
-                );
+                $this->addFlash("warning", "No more cards left in the deck!");
                 break;
             }
         }
 
         $cardsLeft = $deck->countCards();
-        $session->set('card_deck', $deck);
+        $session->set("card_deck", $deck);
 
         $data = [
-            'drawnCards' => $cards,
-            'cardsLeft' => $cardsLeft,
+            "drawnCards" => $cards,
+            "cardsLeft" => $cardsLeft,
         ];
 
-        return $this->render('card/deck_draw_multiple.html.twig', $data);
+        return $this->render("card/deck_draw_multiple.html.twig", $data);
     }
 
-    #[Route("/game/card/deck/deal", name: "card_deck_deal_post", methods: ['POST'])]
-    public function dealCardsPost(
-        Request $request
-    ): Response {
+    #[Route("/card/deck/deal", name: "card_deck_deal_post", methods: ["POST"])]
+    public function dealCardsPost(Request $request): Response
+    {
         // Get the number of players and cards per player from the form
-        $players = $request->request->get('players', 3);
-        $cards = $request->request->get('cards', 2);
+        $players = $request->request->get("players", 3);
+        $cards = $request->request->get("cards", 2);
 
         // redirect to card_deck_deal route with the number of players and cards per player as parameters
-        return $this->redirectToRoute('card_deck_deal', [
-            'players' => $players,
-            'cards' => $cards,
+        return $this->redirectToRoute("card_deck_deal", [
+            "players" => $players,
+            "cards" => $cards,
         ]);
     }
 
-    #[Route("/game/card/deck/deal/{players}/{cards}", name: "card_deck_deal", methods: ['GET'])]
-    public function dealCards(int $players, int $cards, SessionInterface $session): Response
-    {
+    #[
+        Route(
+            "/card/deck/deal/{players}/{cards}",
+            name: "card_deck_deal",
+            methods: ["GET"]
+        )
+    ]
+    public function dealCards(
+        int $players,
+        int $cards,
+        SessionInterface $session
+    ): Response {
         $deck = $session->get("card_deck");
 
         $hands = [];
@@ -133,8 +142,8 @@ class CardGameController extends AbstractController
         $cardsLeft = $deck->countCards();
         if ($cardsLeft < $players * $cards) {
             $this->addFlash(
-                'warning',
-                'Not enough cards left in the deck for the deal!'
+                "warning",
+                "Not enough cards left in the deck for the deal!"
             );
         } else {
             // Deal cards to each player and create CardHand objects to hold the cards
@@ -167,10 +176,10 @@ class CardGameController extends AbstractController
         $data = [
             "hands" => $handData,
             "cardsLeft" => $cardsLeft,
-            'players' => $players,
-            'cards' => $cards,
+            "players" => $players,
+            "cards" => $cards,
         ];
 
-        return $this->render('card/deck_deal.html.twig', $data);
+        return $this->render("card/deck_deal.html.twig", $data);
     }
 }
