@@ -11,19 +11,19 @@ class MainController extends AbstractController
     #[Route("/", name: "home")]
     public function home(): Response
     {
-        return $this->render('home.html.twig');
+        return $this->render("home.html.twig");
     }
 
     #[Route("/about", name: "about")]
     public function about(): Response
     {
-        return $this->render('about.html.twig');
+        return $this->render("about.html.twig");
     }
 
     #[Route("/report", name: "report")]
     public function report(): Response
     {
-        return $this->render('report.html.twig');
+        return $this->render("report.html.twig");
     }
 
     #[Route("/lucky", name: "lucky")]
@@ -32,15 +32,21 @@ class MainController extends AbstractController
         $number = random_int(1, 6);
 
         $data = [
-            'number' => $number
+            "number" => $number,
         ];
 
-        return $this->render('lucky.html.twig', $data);
+        return $this->render("lucky.html.twig", $data);
     }
 
     #[Route("/api", name: "api")]
     public function api(): Response
     {
-        return $this->render('api.html.twig');
+        return $this->render("api.html.twig");
+    }
+
+    #[Route("/games", name: "games")]
+    public function games(): Response
+    {
+        return $this->render("games.html.twig");
     }
 }

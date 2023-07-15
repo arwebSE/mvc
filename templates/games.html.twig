@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    API
+{% endblock %}
+
+{% block content %}
+    <h1>
+        About API
+    </h1>
+    <p>
+        The following games are available:<ul>
+            <li>
+                <a href="{{ path('card_start') }}">Card Game</a> - just to deal cards
+            </li>
+            <li>
+                <a href="{{ path('game_start') }}">21 Game</a> - a classic card game
+            </li>
+        </ul>
+    </p>
+{% endblock %}
+
+{% block sidebar %}
+    <aside id="sidebar">
+        <h1>
+            API Links
+        </h1>
+        <a href="{{ path('api_quote') }}">Quotes</a>
+        <br />
+        <a href="{{ path('api_deck') }}">Deck</a>
+    </aside>
+{% endblock %}

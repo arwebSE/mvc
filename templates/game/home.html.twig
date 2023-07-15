@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game
+{% endblock %}
+
+{% block content %}
+    <h1>
+        21
+    </h1>
+
+    <p>
+        This is a classic card game called 21.
+    </p>
+
+    <p>
+        Start the Game: <a href="{{ path('game_start') }}" class="button primary">Play
+            Game</a>
+    </p>
+
+    <style>
+        h1 { border-bottom: 4px double green; }
+    </style>
+{% endblock %}
