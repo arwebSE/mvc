@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Card\DeckOfCards;
+use App\Card\Card;
 use App\Card\CardHand;
 
 class CardGameController extends AbstractController
@@ -53,6 +54,7 @@ class CardGameController extends AbstractController
     #[Route("/card/deck/draw", name: "card_deck_draw")]
     public function drawCard(SessionInterface $session): Response
     {
+        /** @var DeckOfCards $deck */
         $deck = $session->get("card_deck");
         $drawnCard = $deck->drawCard();
         $cardsLeft = $deck->countCards();
@@ -83,6 +85,7 @@ class CardGameController extends AbstractController
         int $number,
         SessionInterface $session
     ): Response {
+        /** @var DeckOfCards $deck */
         $deck = $session->get("card_deck");
         $cards = [];
 
@@ -110,8 +113,8 @@ class CardGameController extends AbstractController
     public function dealCardsPost(Request $request): Response
     {
         // Get the number of players and cards per player from the form
-        $players = $request->request->get("players", 3);
-        $cards = $request->request->get("cards", 2);
+        $players = (int) $request->request->get("players", 3);
+        $cards = (int) $request->request->get("cards", 2);
 
         // redirect to card_deck_deal route with the number of players and cards per player as parameters
         return $this->redirectToRoute("card_deck_deal", [
@@ -132,6 +135,7 @@ class CardGameController extends AbstractController
         int $cards,
         SessionInterface $session
     ): Response {
+        /** @var DeckOfCards $deck */
         $deck = $session->get("card_deck");
 
         $hands = [];
@@ -150,6 +154,7 @@ class CardGameController extends AbstractController
             for ($i = 0; $i < $players; $i++) {
                 $hand = new CardHand();
                 for ($j = 0; $j < $cards; $j++) {
+                    /** @var Card $card */
                     $card = $deck->drawCard();
                     $hand->addCard($card);
                 }

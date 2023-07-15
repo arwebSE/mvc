@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Card\DeckOfCards;
+use App\Card\Card;
 use App\Card\CardHand;
 
 class JsonController extends AbstractController
@@ -113,10 +114,26 @@ class JsonController extends AbstractController
         return new JsonResponse($data);
     }
 
+    /**
+     * Draw cards from the deck.
+     *
+     * @param int               $number  The number of cards to draw.
+     * @param SessionInterface  $session The session interface.
+     *
+     * @return array{
+     *     "message"?: string,
+     *     "cards": array{
+     *         "rank": string,
+     *         "suit": string
+     *     }[],
+     *     "cardsLeft": int
+     * }
+     */
     private function drawCardsFromDeck(
         int $number,
         SessionInterface $session
     ): array {
+        /** @var DeckOfCards $deck */
         $deck = $session->get("card_deck");
         $cards = [];
 
@@ -152,6 +169,7 @@ class JsonController extends AbstractController
     #[Route("/api/deck/draw", name: "api_deck_draw", methods: ["POST"])]
     public function drawCard(SessionInterface $session): JsonResponse
     {
+        /** @var array<Card> */
         $data = $this->drawCardsFromDeck(1, $session);
 
         if (isset($data["cards"][0])) {
@@ -189,6 +207,7 @@ class JsonController extends AbstractController
         int $cards,
         SessionInterface $session
     ): JsonResponse {
+        /** @var DeckOfCards $deck */
         $deck = $session->get("card_deck");
 
         if ($deck->countCards() < $players * $cards) {
@@ -204,7 +223,9 @@ class JsonController extends AbstractController
             $hand = new CardHand();
             for ($j = 0; $j < $cards; $j++) {
                 $card = $deck->drawCard();
-                $hand->addCard($card);
+                if ($card !== null) {
+                    $hand->addCard($card);
+                }
             }
             $hands["Player $i"] = $hand->getCardStrings();
         }

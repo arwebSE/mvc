@@ -4,14 +4,10 @@ namespace App\Dice;
 
 class DiceGraphic extends Dice
 {
-    private $representation = [
-        '⚀',
-        '⚁',
-        '⚂',
-        '⚃',
-        '⚄',
-        '⚅',
-    ];
+    /**
+     * @var string[]
+     */
+    private array $representation = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
     public function __construct()
     {

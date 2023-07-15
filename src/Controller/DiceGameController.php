@@ -111,6 +111,7 @@ class DiceGameController extends AbstractController
     #[Route("/game/pig/play", name: "pig_play", methods: ["GET"])]
     public function play(SessionInterface $session): Response
     {
+        /** @var DiceHand $dicehand */
         $dicehand = $session->get("pig_dicehand");
 
         $data = [
@@ -126,6 +127,7 @@ class DiceGameController extends AbstractController
     #[Route("/game/pig/roll", name: "pig_roll", methods: ["POST"])]
     public function roll(SessionInterface $session): Response
     {
+        /** @var DiceHand $hand */
         $hand = $session->get("pig_dicehand");
         $hand->roll();
 
