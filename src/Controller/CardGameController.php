@@ -88,12 +88,11 @@ class CardGameController extends AbstractController
 
         for ($i = 0; $i < $number; $i++) {
             $card = $deck->drawCard();
-            if ($card !== null) {
-                $cards[] = $card;
-            } else {
+            if ($card === null) {
                 $this->addFlash("warning", "No more cards left in the deck!");
                 break;
             }
+            $cards[] = $card;
         }
 
         $cardsLeft = $deck->countCards();

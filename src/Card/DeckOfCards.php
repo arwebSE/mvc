@@ -8,8 +8,22 @@ class DeckOfCards
 
     public function __construct()
     {
-        $suits = ['H', 'D', 'C', 'S'];
-        $ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        $suits = ["H", "D", "C", "S"];
+        $ranks = [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+            "A",
+        ];
 
         foreach ($suits as $suit) {
             foreach ($ranks as $rank) {
@@ -40,11 +54,27 @@ class DeckOfCards
 
     public function sortDeck(): void
     {
-        usort($this->cards, function ($a, $b) {
-            $compareSuit = strcmp($a->getSuit(), $b->getSuit());
-            $rankValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        usort($this->cards, function ($card1, $card2) {
+            $compareSuit = strcmp($card1->getSuit(), $card2->getSuit());
+            $rankValues = [
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "J",
+                "Q",
+                "K",
+                "A",
+            ];
 
-            $compareRank = array_search($a->getRank(), $rankValues) <=> array_search($b->getRank(), $rankValues);
+            $compareRank =
+                array_search($card1->getRank(), $rankValues) <=>
+                array_search($card2->getRank(), $rankValues);
 
             return $compareSuit === 0 ? $compareRank : $compareSuit;
         });

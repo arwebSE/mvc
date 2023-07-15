@@ -17,7 +17,7 @@ class DiceGameController extends AbstractController
     #[Route("/game/pig", name: "pig_start")]
     public function home(): Response
     {
-        return $this->render('pig/home.html.twig');
+        return $this->render("pig/home.html.twig");
     }
 
     #[Route("/game/pig/test/roll", name: "test_roll_die")]
@@ -31,7 +31,7 @@ class DiceGameController extends AbstractController
             "diceString" => $die->getAsString(),
         ];
 
-        return $this->render('pig/test/roll.html.twig', $data);
+        return $this->render("pig/test/roll.html.twig", $data);
     }
 
     #[Route("/game/pig/test/roll/{num<\d+>}", name: "test_roll_num_dice")]
@@ -54,7 +54,7 @@ class DiceGameController extends AbstractController
             "diceRoll" => $diceRoll,
         ];
 
-        return $this->render('pig/test/roll_many.html.twig', $data);
+        return $this->render("pig/test/roll_many.html.twig", $data);
     }
 
     #[Route("/game/pig/test/dicehand/{num<\d+>}", name: "test_dicehand")]
@@ -66,11 +66,8 @@ class DiceGameController extends AbstractController
 
         $hand = new DiceHand();
         for ($i = 1; $i <= $num; $i++) {
-            if ($i % 2 === 1) {
-                $hand->add(new DiceGraphic());
-            } else {
-                $hand->add(new Dice());
-            }
+            $die = $i % 2 === 1 ? new DiceGraphic() : new Dice();
+            $hand->add($die);
         }
 
         $hand->roll();
@@ -80,21 +77,21 @@ class DiceGameController extends AbstractController
             "diceRoll" => $hand->getString(),
         ];
 
-        return $this->render('pig/test/dicehand.html.twig', $data);
+        return $this->render("pig/test/dicehand.html.twig", $data);
     }
 
-    #[Route("/game/pig/init", name: "pig_init_get", methods: ['GET'])]
+    #[Route("/game/pig/init", name: "pig_init_get", methods: ["GET"])]
     public function init(): Response
     {
-        return $this->render('pig/init.html.twig');
+        return $this->render("pig/init.html.twig");
     }
 
-    #[Route("/game/pig/init", name: "pig_init_post", methods: ['POST'])]
+    #[Route("/game/pig/init", name: "pig_init_post", methods: ["POST"])]
     public function initCallback(
         Request $request,
         SessionInterface $session
     ): Response {
-        $numDice = $request->request->get('num_dice');
+        $numDice = $request->request->get("num_dice");
 
         $hand = new DiceHand();
         for ($i = 1; $i <= $numDice; $i++) {
@@ -108,29 +105,27 @@ class DiceGameController extends AbstractController
         $session->set("pig_total", 0);
         $session->set("pig_rounds", 0);
 
-        return $this->redirectToRoute('pig_play');
+        return $this->redirectToRoute("pig_play");
     }
 
-    #[Route("/game/pig/play", name: "pig_play", methods: ['GET'])]
-    public function play(
-        SessionInterface $session
-    ): Response {
+    #[Route("/game/pig/play", name: "pig_play", methods: ["GET"])]
+    public function play(SessionInterface $session): Response
+    {
         $dicehand = $session->get("pig_dicehand");
 
         $data = [
             "pigDice" => $session->get("pig_dice"),
             "pigRound" => $session->get("pig_round"),
             "pigTotal" => $session->get("pig_total"),
-            "diceValues" => $dicehand->getString()
+            "diceValues" => $dicehand->getString(),
         ];
 
-        return $this->render('pig/play.html.twig', $data);
+        return $this->render("pig/play.html.twig", $data);
     }
 
-    #[Route("/game/pig/roll", name: "pig_roll", methods: ['POST'])]
-    public function roll(
-        SessionInterface $session
-    ): Response {
+    #[Route("/game/pig/roll", name: "pig_roll", methods: ["POST"])]
+    public function roll(SessionInterface $session): Response
+    {
         $hand = $session->get("pig_dicehand");
         $hand->roll();
 
@@ -149,48 +144,40 @@ class DiceGameController extends AbstractController
         $session->set("pig_round", $roundTotal + $round);
         $session->set("pig_rounds", $session->get("pig_rounds") + 1);
 
-        return $this->redirectToRoute('pig_play');
+        return $this->redirectToRoute("pig_play");
     }
 
-    #[Route("/game/pig/save", name: "pig_save", methods: ['POST'])]
-    public function save(
-        SessionInterface $session
-    ): Response {
+    #[Route("/game/pig/save", name: "pig_save", methods: ["POST"])]
+    public function save(SessionInterface $session): Response
+    {
         $roundTotal = $session->get("pig_round");
         $gameTotal = $session->get("pig_total");
 
         //if roundTotal is 0, then the player has rolled a 1 and lost the round
         if ($roundTotal === 0) {
-            $this->addFlash(
-                'warning',
-                "Can't save a round with a 1!"
-            );
+            $this->addFlash("warning", "Can't save a round with a 1!");
         } else {
-            $this->addFlash(
-                'notice',
-                'Round saved!'
-            );
+            $this->addFlash("notice", "Round saved!");
         }
 
         $session->set("pig_round", 0);
         $session->set("pig_total", $roundTotal + $gameTotal);
 
         if ($session->get("pig_total") >= 100) {
-            return $this->redirectToRoute('pig_score');
+            return $this->redirectToRoute("pig_score");
         }
 
-        return $this->redirectToRoute('pig_play');
+        return $this->redirectToRoute("pig_play");
     }
 
-    #[Route("/game/pig/score", name: "pig_score", methods: ['GET'])]
-    public function score(
-        SessionInterface $session
-    ): Response {
+    #[Route("/game/pig/score", name: "pig_score", methods: ["GET"])]
+    public function score(SessionInterface $session): Response
+    {
         $data = [
             "pigRounds" => $session->get("pig_rounds"),
-            "pigTotal" => $session->get("pig_total")
+            "pigTotal" => $session->get("pig_total"),
         ];
 
-        return $this->render('pig/score.html.twig', $data);
+        return $this->render("pig/score.html.twig", $data);
     }
 }
