@@ -30,10 +30,7 @@ yarn-error.log
 .DS_Store
 
 tools/phpstan/vendor/
-
 tools/phpmd/vendor/
-
-.php-cs-fixer.cache
 tools/php-cs-fixer/vendor/
 
 *.cache
