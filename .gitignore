@@ -34,3 +34,4 @@ tools/phpstan/vendor/
 tools/phpmd/vendor/
 
 .php-cs-fixer.cache
+tools/php-cs-fixer/vendor/
