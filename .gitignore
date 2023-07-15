@@ -29,4 +29,6 @@ yarn-error.log
 # mac
 .DS_Store
 
-tools/
+tools/phpstan/vendor/
+
+tools/phpmd/vendor/

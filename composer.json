@@ -103,6 +103,7 @@
         "phpmd": "tools/phpmd/vendor/bin/phpmd . text phpmd.xml || true",
         "phpstan": "tools/phpstan/vendor/bin/phpstan || true",
         "lint": [
+            "@csfix",
             "@phpmd",
             "@phpstan"
         ]
