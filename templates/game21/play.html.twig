@@ -26,8 +26,7 @@
         Your Hand:
     </h2>
     <div class="card-grid">
-        {% for cardString in playerHand %}
-            {% set card = parseCardString(cardString) %}
+        {% for card in playerHand %}
             <div class="card {% set suit_color = card.getSuit() == 'H' or card.getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
                 <span class="rank">{{ card.getRank() }}</span>
                 <span class="suit">{{ card.getSuitSymbol() }}</span>
@@ -38,9 +37,9 @@
         Dealer's Hand:
     </h2>
     <div class="card-grid">
-        <div class="card {% set card = parseCardString(dealerHand[0]) %} {% set suit_color = card.getSuit() == 'H' or card.getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
-            <span class="rank">{{ card.getRank() }}</span>
-            <span class="suit">{{ card.getSuitSymbol() }}</span>
+        <div class="card {% set suit_color = dealerHand[0].getSuit() == 'H' or dealerHand[0].getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
+            <span class="rank">{{ dealerHand[0].getRank() }}</span>
+            <span class="suit">{{ dealerHand[0].getSuitSymbol() }}</span>
         </div>
         <div class="card">
             Unknown

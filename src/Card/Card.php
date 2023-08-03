@@ -27,4 +27,15 @@ class Card
     {
         return $this->rank . $this->suit;
     }
+
+    public function getSuitSymbol(): string
+    {
+        return match ($this->suit) {
+            'H' => '♥',
+            'D' => '♦',
+            'C' => '♣',
+            'S' => '♠',
+            default => '?', // Handle invalid suits gracefully
+        };
+    }
 }
