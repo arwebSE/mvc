@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Game 21 - Play
+    </title>
+    <style>
+        .card-grid { display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .card-column { margin-bottom: 20px; }
+        .player-label { font-weight: bold; margin-bottom: 5px; }
+        .card { border: 1px solid #ccc; border-radius: 5px; padding: 5px; margin-bottom: 5px; width: 80px; text-align: center; }
+        .red { color: red; }
+        .black { color: black; }
+        .button { display: inline-block; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; color: #fff; text-align: center; text-decoration: none; background-color: #007bff; }
+        .button.primary { background-color: #007bff; }
+        .button.success { background-color: #28a745; }
+        .button.danger { background-color: #dc3545; }
+        .button[disabled] { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>
+        Game 21 - Play
+    </h1>
+    <h2>
+        Your Hand:
+    </h2>
+    <div class="card-grid">
+        {% for cardString in playerHand %}
+            {% set card = parseCardString(cardString) %}
+            <div class="card {% set suit_color = card.getSuit() == 'H' or card.getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
+                <span class="rank">{{ card.getRank() }}</span>
+                <span class="suit">{{ card.getSuitSymbol() }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    <h2>
+        Dealer's Hand:
+    </h2>
+    <div class="card-grid">
+        <div class="card {% set card = parseCardString(dealerHand[0]) %} {% set suit_color = card.getSuit() == 'H' or card.getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
+            <span class="rank">{{ card.getRank() }}</span>
+            <span class="suit">{{ card.getSuitSymbol() }}</span>
+        </div>
+        <div class="card">
+            Unknown
+        </div>
+    </div>
+    <form action="{{ path('game21_hit') }}" method="post">
+        <button class="button" type="submit">Hit</button>
+    </form>
+    <form action="{{ path('game21_stand') }}" method="post">
+        <button class="button" type="submit">Stand</button>
+    </form>
+</body>
+</html>

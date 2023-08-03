@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Game 21 - Result
+        </title>
+    </head>
+    <body>
+        <h1>
+            Game 21 - Result
+        </h1>
+        <h2>
+            Your Hand:
+        </h2>
+        <ul>
+            {% for card in playerHand %}
+                <li>{{ card }}</li>
+            {% endfor %}
+        </ul>
+        <h2>
+            Dealer's Hand:
+        </h2>
+        <ul>
+            {% for card in dealerHand %}
+                <li>{{ card }}</li>
+            {% endfor %}
+        </ul>
+        <p>
+            {{ result }}
+        </p>
+        <a href="{{ path('game21_play') }}">Play Again</a>
+    </body>
+</html>
