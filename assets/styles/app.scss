@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Playball");
+
 :root {
     --primary-color: #007aff;
     --secondary-color: #f7f7f7;
@@ -429,12 +431,70 @@ footer {
     }
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+.frame {
+    width: 600px;
+    height: 350px;
+    border: 10px solid #8b5a2b;
+    border-radius: 114px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    background-color: #2d7c3b;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 100px inset rgba(0, 0, 0, 0.406);
+    position: relative;
+}
+
+.table .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2em;
+    background: -webkit-linear-gradient(#d4df8c, #c9953b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "Playball", cursive;
+}
+
+.table p {
+    color: white;
+    font-size: 0.7em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.player {
+    margin: 70px auto;
+}
+
 .card {
     display: inline-block;
     width: 50px;
     height: 70px;
     background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.55);
+    /* border: 1px solid rgba(0, 0, 0, 0.55); */
     border-radius: 8px;
     text-align: center;
     line-height: 70px;
@@ -442,9 +502,14 @@ footer {
     font-size: 20px;
     margin: 5px;
     position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     transition: all 0.15s ease-in-out; /* added transition for smooth effect */
     cursor: pointer;
+    color: white;
+
+    h2 {
+        color: white !important;
+    }
 
     &:hover {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* increased box-shadow on hover */
@@ -479,6 +544,39 @@ footer {
             left: 2px;
         }
     }
+
+    &.unknown {
+        .bg {
+            width: 90%;
+            height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgb(255, 255, 255);
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.mt {
+    margin-top: 20px;
 }
 
 .card-grid {
