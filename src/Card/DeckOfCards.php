@@ -47,12 +47,13 @@ class DeckOfCards
 
     public function drawCard(): ?Card
     {
-        if ($this->countCards() > 0) {
-            $card = $this->cards[0];
-            array_shift($this->cards); // remove the drawn card from the deck
-            return $card;
+        if (empty($this->cards)) {
+            return null;
         }
-        return null;
+
+        $card = $this->cards[0];
+        array_shift($this->cards); // remove the drawn card from the deck
+        return $card;
     }
 
     public function sortDeck(): void

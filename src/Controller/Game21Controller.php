@@ -40,10 +40,15 @@ class Game21Controller extends AbstractController
         $session->set("game21_player_hand", $playerHand);
         $session->set("game21_dealer_hand", $dealerHand);
 
+        // Initialize players money
+        $playerMoney = $session->get("game21_money", 100); // Default to $100 if not set
+        $session->set("game21_money", $playerMoney);
+
         // Render the game21 play template with player's and dealer's hands
         $data = [
-            "playerHand" => $playerHand->getCardStrings(),
-            "dealerHand" => $dealerHand->getCardStrings(),
+            "playerHand" => $playerHand->getCards(),
+            "dealerHand" => $dealerHand->getCards(),
+            "handValue" => 0,
         ];
 
         return $this->render("game21/play.html.twig", $data);
@@ -52,14 +57,14 @@ class Game21Controller extends AbstractController
     #[Route("/game21/hit", name: "game21_hit")]
     public function hit(SessionInterface $session): Response
     {
-        /** @var DeckOfCards $deck */
+        // Draw a new card from the deck and add it to the player's hand
         $deck = $session->get("game21_deck");
-        /** @var CardHand $playerHand */
         $playerHand = $session->get("game21_player_hand");
+        $dealerHand = $session->get("game21_dealer_hand");
 
         // Draw a new card from the deck and add it to the player's hand
-        $newCard = $deck->drawCard();
-        $playerHand->addCard($newCard);
+        $drawnCard = $deck->drawCard();
+        $playerHand->addCard($drawnCard);
 
         // Save the updated deck and player's hand to the session
         $session->set("game21_deck", $deck);
@@ -70,10 +75,8 @@ class Game21Controller extends AbstractController
         if ($handValue > 21) {
             // Player busts, render the result template with a message
             $data = [
-                "playerHand" => $playerHand->getCardStrings(),
-                "dealerHand" => $session
-                    ->get("game21_dealer_hand")
-                    ->getCardStrings(),
+                "playerHand" => $playerHand->getCards(),
+                "dealerHand" => $dealerHand->getCards(),
                 "result" => "Bust! You lose.",
             ];
             return $this->render("game21/result.html.twig", $data);
@@ -81,10 +84,9 @@ class Game21Controller extends AbstractController
 
         // Player hasn't bust, render the game21 play template with player's and dealer's hands
         $data = [
-            "playerHand" => $playerHand->getCardStrings(),
-            "dealerHand" => $session
-                ->get("game21_dealer_hand")
-                ->getCardStrings(),
+            "playerHand" => $playerHand->getCards(),
+            "dealerHand" => $dealerHand->getCards(),
+            "handValue" => $handValue,
         ];
         return $this->render("game21/play.html.twig", $data);
     }
@@ -92,9 +94,7 @@ class Game21Controller extends AbstractController
     #[Route("/game21/stand", name: "game21_stand")]
     public function stand(SessionInterface $session): Response
     {
-        /** @var DeckOfCards $deck */
         $deck = $session->get("game21_deck");
-        /** @var CardHand $dealerHand */
         $dealerHand = $session->get("game21_dealer_hand");
 
         // Dealer draws cards until the hand value is at least 17
@@ -119,19 +119,17 @@ class Game21Controller extends AbstractController
             $dealerHandValue > 21 ||
             ($playerHandValue <= 21 && $playerHandValue > $dealerHandValue)
         ) {
-            $result = "You win!";
+            $result = "You win! Dealer has $dealerHandValue but you have $playerHandValue!";
         } elseif ($playerHandValue == $dealerHandValue) {
-            $result = "It's a tie!";
+            $result = "It's a tie! Both you and the dealer have $playerHandValue.";
         } else {
-            $result = "You lose.";
+            $result = "You lose. Dealer has $dealerHandValue and you have $playerHandValue...";
         }
 
         // Render the result template with the final outcome
         $data = [
-            "playerHand" => $session
-                ->get("game21_player_hand")
-                ->getCardStrings(),
-            "dealerHand" => $dealerHand->getCardStrings(),
+            "playerHand" => $session->get("game21_player_hand")->getCards(),
+            "dealerHand" => $dealerHand->getCards(),
             "result" => $result,
         ];
         return $this->render("game21/result.html.twig", $data);

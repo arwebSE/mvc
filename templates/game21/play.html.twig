@@ -1,55 +1,113 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>
-        Game 21 - Play
-    </title>
-    <style>
-        .card-grid { display: flex; justify-content: space-between; flex-wrap: wrap; }
-        .card-column { margin-bottom: 20px; }
-        .player-label { font-weight: bold; margin-bottom: 5px; }
-        .card { border: 1px solid #ccc; border-radius: 5px; padding: 5px; margin-bottom: 5px; width: 80px; text-align: center; }
-        .red { color: red; }
-        .black { color: black; }
-        .button { display: inline-block; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; color: #fff; text-align: center; text-decoration: none; background-color: #007bff; }
-        .button.primary { background-color: #007bff; }
-        .button.success { background-color: #28a745; }
-        .button.danger { background-color: #dc3545; }
-        .button[disabled] { opacity: 0.5; cursor: not-allowed; }
-    </style>
-</head>
-<body>
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Game 21 - Play
+{% endblock %}
+
+{% block content %}
     <h1>
         Game 21 - Play
     </h1>
-    <h2>
-        Your Hand:
-    </h2>
-    <div class="card-grid">
-        {% for card in playerHand %}
-            <div class="card {% set suit_color = card.getSuit() == 'H' or card.getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
-                <span class="rank">{{ card.getRank() }}</span>
-                <span class="suit">{{ card.getSuitSymbol() }}</span>
+
+    {{ include('flash.html.twig') }}
+
+    <h4 class="results"></h4>
+
+    <div class="container">
+        <div class="frame">
+            <div class="table">
+                <div class="logo">
+                    JackDash™
+                </div>
+
+                <div class="player">
+                    <p>
+                        Dealer
+                    </p>
+
+                    {% if
+                        dealerHand[0] is defined
+                            and dealerHand[0] is not empty %}
+                        <div class="card {{
+                            dealerHand[0].getSuit() == 'H'
+                                or dealerHand[0].getSuit() == 'D'
+                                ? 'red'
+                                : 'black'
+                            }}">
+                            <span class="rank">
+                                {{ attribute(dealerHand[0], 'getRank') }}
+                            </span>
+                            <span class="suit top">
+                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
+                            </span>
+                            <span class="suit bottom">
+                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
+                            </span>
+                        </div>
+                    {% else %}
+                        {# Handle the case when dealerHand[0] is not an object (e.g., it's a string or null) #}
+                        <div class="card error">
+                            <span class="bg">
+                                <span class="rank">Err</span>
+                            </span>
+                        </div>
+                    {% endif %}
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                </div>
+
+                <div class="player">
+                    {% for card in playerHand %}
+                        {% if card is defined and card is not empty %}
+                            <div class="card {{
+                                card.getSuit() == 'H' or card.getSuit() == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                                <span class="suit bottom">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                            </div>
+                        {% else %}
+                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
+                            <div class="card error">
+                                <span class="bg">
+                                    <span class="rank">Err</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <p>
+                        You
+                    </p>
+                </div>
             </div>
-        {% endfor %}
-    </div>
-    <h2>
-        Dealer's Hand:
-    </h2>
-    <div class="card-grid">
-        <div class="card {% set suit_color = dealerHand[0].getSuit() == 'H' or dealerHand[0].getSuit() == 'D' ? 'red' : 'black' %} {{ suit_color }}">
-            <span class="rank">{{ dealerHand[0].getRank() }}</span>
-            <span class="suit">{{ dealerHand[0].getSuitSymbol() }}</span>
         </div>
-        <div class="card">
-            Unknown
+
+        <div class="row mt">
+            {% if handValue == 21 %}
+                <form action="{{ path('game21_stand') }}" method="post">
+                    <button class="button success" type="submit">Stand</button>
+                </form>
+            {% else %}
+                <form action="{{ path('game21_hit') }}" method="post">
+                    <button class="button primary" type="submit">Hit</button>
+                </form>
+                <form action="{{ path('game21_stand') }}" method="post">
+                    <button class="button success" type="submit">Stand</button>
+                </form>
+            {% endif %}
+
+            <a class="button danger" href="{{ path('game21_play') }}">
+                Start Over
+            </a>
         </div>
     </div>
-    <form action="{{ path('game21_hit') }}" method="post">
-        <button class="button" type="submit">Hit</button>
-    </form>
-    <form action="{{ path('game21_stand') }}" method="post">
-        <button class="button" type="submit">Stand</button>
-    </form>
-</body>
-</html>
+{% endblock %}

@@ -1,33 +1,94 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            Game 21 - Result
-        </title>
-    </head>
-    <body>
-        <h1>
-            Game 21 - Result
-        </h1>
-        <h2>
-            Your Hand:
-        </h2>
-        <ul>
-            {% for card in playerHand %}
-                <li>{{ card }}</li>
-            {% endfor %}
-        </ul>
-        <h2>
-            Dealer's Hand:
-        </h2>
-        <ul>
-            {% for card in dealerHand %}
-                <li>{{ card }}</li>
-            {% endfor %}
-        </ul>
-        <p>
-            {{ result }}
-        </p>
-        <a href="{{ path('game21_play') }}">Play Again</a>
-    </body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Game 21 - Results
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Game 21 - Results
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    <h4 class="results">
+        {{ result }}
+    </h4>
+
+    <div class="container">
+        <div class="frame">
+            <div class="table">
+                <div class="logo">
+                    JackDash™
+                </div>
+
+                <div class="player">
+                    <p>
+                        Dealer
+                    </p>
+
+                    {% for card in dealerHand %}
+                        {% if card is defined and card is not empty %}
+                            <div class="card {{
+                                card.getSuit() == 'H' or card.getSuit() == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                                <span class="suit bottom">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                            </div>
+                        {% else %}
+                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
+                            <div class="card error">
+                                <span class="bg">
+                                    <span class="rank">Err</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="player">
+                    {% for card in playerHand %}
+                        {% if card is defined and card is not empty %}
+                            <div class="card {{
+                                card.getSuit() == 'H' or card.getSuit() == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                                <span class="suit bottom">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                            </div>
+                        {% else %}
+                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
+                            <div class="card error">
+                                <span class="bg">
+                                    <span class="rank">Err</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <p>
+                        You
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt">
+            <a class="button primary" href="{{ path('game21_play') }}">
+                Play Again
+            </a>
+        </div>
+    </div>
+{% endblock %}
