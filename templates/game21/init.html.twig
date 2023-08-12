@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Game 21 - Bet
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            Welcome to Game 21!
+        </h1>
+
+        <p>
+            Start a new game by placing your bet and dealing the cards.
+        </p>
+
+        <div class="frame">
+            <div class="table">
+                <div class="logo">
+                    JackDash™
+                </div>
+
+                <div class="player">
+                    <p>
+                        Dealer
+                    </p>
+
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                </div>
+
+                <div class="player">
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <p>
+                        You
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt">
+            <form action="{{ path('game21_play') }}" method="post">
+                <div class="form-group">
+                    <label for="betAmount">Bet:</label>
+                    <button class="button"
+                        type="button"
+                        onclick="adjustBet(-10)">
+                        -
+                    </button>
+                    $<input type="number"
+                        id="betAmount"
+                        name="betAmount"
+                        value="{{ betAmount ?? 10 }}"
+                        min="1"
+                        max="{{ playerMoney }}" />
+
+                    <button class="button"
+                        type="button"
+                        onclick="adjustBet(10)">
+                        +
+                    </button>
+                    <button type="submit" class="button primary">
+                        Deal Cards
+                    </button>
+                </div>
+            </form>
+        </div>
+        <p>
+            Your Balance: ${{ playerMoney }}
+        </p>
+    </div>
+
+    <script>
+        const adjustBet = (amount) => { let currentBet =
+        parseInt(document.getElementById("betAmount").value);
+        console.log("Current Bet: ", currentBet); currentBet += amount; if
+        (currentBet < 10 && amount < 0) { currentBet = 10; } if (currentBet >
+        {{ playerMoney }}) { currentBet = {{ playerMoney }}; }
+        document.getElementById("betAmount").value = currentBet; }
+    </script>
+{% endblock %}

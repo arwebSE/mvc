@@ -11,7 +11,9 @@
 
     {{ include('flash.html.twig') }}
 
-    <h4 class="results"></h4>
+    <h4 class="results">
+        You have {{ handValue }}
+    </h4>
 
     <div class="container">
         <div class="frame">
@@ -105,9 +107,21 @@
                 </form>
             {% endif %}
 
-            <a class="button danger" href="{{ path('game21_play') }}">
+            <a class="button danger" href="{{ path('game21_init') }}">
                 Start Over
             </a>
+        </div>
+
+        <div class="bet-container mt">
+            <h5>
+                Current Bet: $<span id="displayedBet">{{ app.session.get(
+                        'game21_bet'
+                    )
+                        ?? 10 }}</span>
+            </h5>
+            <p>
+                Your Balance: ${{ playerMoney }}
+            </p>
         </div>
     </div>
 {% endblock %}

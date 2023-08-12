@@ -27,6 +27,7 @@ main {
     flex-direction: row;
     justify-content: center; /* Center the content horizontally */
     align-items: flex-start;
+    min-height: 83vh;
 }
 
 #content {
@@ -435,9 +436,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 65vh;
-    overflow: hidden; /* Hide any overflowing content */
+    height: 70vh; /* Hide any overflowing content */
 }
 
 .frame {
@@ -616,4 +615,8 @@ footer {
     font-size: 24px;
     font-weight: bold;
     height: 50px; /* Set a fixed height for the results element */
+}
+
+#betAmountInput {
+    width: 50px !important;
 }

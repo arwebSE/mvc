@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Game 21 - Results
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Game 21 - Results
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    <h4 class="results"></h4>
+
+    <div class="container">
+        You ran out of money! =(<div class="row mt">
+            <a class="button primary" href="{{ path('game21_home') }}">
+                Start Over
+            </a>
+        </div>
+    </div>
+{% endblock %}

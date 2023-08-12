@@ -86,9 +86,13 @@
         </div>
 
         <div class="row mt">
-            <a class="button primary" href="{{ path('game21_play') }}">
+            <a class="button primary" href="{{ path('game21_init') }}">
                 Play Again
             </a>
         </div>
+
+        <p>
+            Your Balance: ${{ playerMoney }}
+        </p>
     </div>
 {% endblock %}
