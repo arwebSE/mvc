@@ -59,130 +59,41 @@
                     </div>
                 </div>
 
-                {% if hasSplit %}
-                    <script>
-                        console.log("has split", {{ hasSplit }});
-                    </script>
-                    {# First Split Hand #}
-                    <div class="player">
-                        {% for card in playerHand1 %}
-                            {% if card is defined and card is not empty %}
-                                <div class="card {{
-                                    card.getSuit() == 'H'
-                                        or card.getSuit() == 'D'
-                                        ? 'red'
-                                        : 'black'
-                                    }}">
-                                    <span class="rank">
-                                        {{ card.getRank() }}
-                                    </span>
-                                    <span class="suit top">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                    <span class="suit bottom">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                </div>
-                            {% else %}
-                                {# Handle the case when card is not an object (e.g., it's a string or null) #}
-                                <div class="card error">
-                                    <span class="bg">
-                                        <span class="rank">Err</span>
-                                    </span>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="data-row">
-                            <p>
-                                You (Hand 1)
-                            </p>
-                            <p class="right">
-                                {{ handValue1 }}
-                            </p>
-                        </div>
+                {# Single Hand Visualization #}
+                <div class="player">
+                    {% for card in playerHand %}
+                        {% if card is defined and card is not empty %}
+                            <div class="card {{
+                                card.getSuit() == 'H' or card.getSuit() == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                                <span class="suit bottom">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                            </div>
+                        {% else %}
+                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
+                            <div class="card error">
+                                <span class="bg">
+                                    <span class="rank">Err</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="data-row">
+                        <p>
+                            You
+                        </p>
+                        <p class="right">
+                            {{ handValue }}
+                        </p>
                     </div>
-
-                    {# Second Split Hand #}
-                    <div class="player">
-                        {% for card in playerHand2 %}
-                            {% if card is defined and card is not empty %}
-                                <div class="card {{
-                                    card.getSuit() == 'H'
-                                        or card.getSuit() == 'D'
-                                        ? 'red'
-                                        : 'black'
-                                    }}">
-                                    <span class="rank">
-                                        {{ card.getRank() }}
-                                    </span>
-                                    <span class="suit top">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                    <span class="suit bottom">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                </div>
-                            {% else %}
-                                {# Handle the case when card is not an object (e.g., it's a string or null) #}
-                                <div class="card error">
-                                    <span class="bg">
-                                        <span class="rank">Err</span>
-                                    </span>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="data-row">
-                            <p>
-                                You (Hand 2)
-                            </p>
-                            <p class="right">
-                                {{ handValue2 }}
-                            </p>
-                        </div>
-                    </div>
-                {% else %}
-                    <script>
-                        console.log("No split");
-                    </script>
-                    {# Original Single Hand Visualization #}
-                    <div class="player">
-                        {% for card in playerHand %}
-                            {% if card is defined and card is not empty %}
-                                <div class="card {{
-                                    card.getSuit() == 'H'
-                                        or card.getSuit() == 'D'
-                                        ? 'red'
-                                        : 'black'
-                                    }}">
-                                    <span class="rank">
-                                        {{ card.getRank() }}
-                                    </span>
-                                    <span class="suit top">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                    <span class="suit bottom">
-                                        {{ card.getSuitSymbol() }}
-                                    </span>
-                                </div>
-                            {% else %}
-                                {# Handle the case when card is not an object (e.g., it's a string or null) #}
-                                <div class="card error">
-                                    <span class="bg">
-                                        <span class="rank">Err</span>
-                                    </span>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="data-row">
-                            <p>
-                                You
-                            </p>
-                            <p class="right">
-                                {{ handValue }}
-                            </p>
-                        </div>
-                    </div>
-                {% endif %}
+                </div>
             </div>
         </div>
 
@@ -197,12 +108,6 @@
                 </form>
                 <form action="{{ path('game21_stand') }}" method="post">
                     <button class="button success" type="submit">Stand</button>
-                </form>
-            {% endif %}
-
-            {% if canSplit %}
-                <form action="{{ path('game21_split') }}" method="post">
-                    <button class="button warning" type="submit">Split</button>
                 </form>
             {% endif %}
 
