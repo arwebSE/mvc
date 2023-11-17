@@ -39,6 +39,14 @@ class CardHand
         return null;
     }
 
+    public function removeLastCard(): ?Card
+    {
+        if (!empty($this->cards)) {
+            return array_pop($this->cards);
+        }
+        return null;
+    }
+
     public function countCards(): int
     {
         return count($this->cards);
