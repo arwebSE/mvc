@@ -17,8 +17,10 @@ class Game21Controller extends AbstractController
     #[Route("/game", name: "game21_home")]
     public function home(SessionInterface $session): Response
     {
-        // Clear the session (invalidate)
-        $session->invalidate();
+        // Clear the session
+        session_start(); // if not already started
+        $_SESSION = [];
+        session_destroy();
 
         return $this->render("game21/home.html.twig");
     }
@@ -81,6 +83,33 @@ class Game21Controller extends AbstractController
         $playerHand = $session->get("game21_player_hand");
         $dealerHand = $session->get("game21_dealer_hand");
 
+        // Handle split hands:
+        $playerHands = $session->get("game21_player_hands", []);
+        $currentIndex = $session->get("game21_current_hand_index", 0);
+        $hasSplit = count($playerHands) === 2;
+
+        if (!empty($playerHands)) {
+            $playerHand = $playerHands[$currentIndex];
+        }
+
+        // debug print both hands with pre
+        echo "<pre>";
+        echo "Player hand: ";
+        PHP_EOL;
+        print_r($playerHand);
+        echo "DEALER hand: ";
+        PHP_EOL;
+        print_r($dealerHand);
+        PHP_EOL;
+        echo "has split: ";
+        print_r($hasSplit);
+        PHP_EOL;
+        echo "player hands: ";
+        print_r($playerHands);
+        PHP_EOL;
+
+        echo "</pre>";
+
         // Render the game21 play template with player's and dealer's hands
         $data = [
             "playerHand" => $playerHand->getCards(),
@@ -88,6 +117,16 @@ class Game21Controller extends AbstractController
             "handValue" => $this->calculateHandValue($playerHand),
             "playerMoney" => $playerMoney,
             "betAmount" => $betAmount,
+            "canSplit" => $this->canSplit($playerHand),
+            "hasSplit" => $hasSplit,
+            "playerHand1" => $playerHands[0] ?? null,
+            "playerHand2" => $playerHands[1] ?? null,
+            "handValue1" => isset($playerHands[0])
+                ? $this->calculateHandValue($playerHands[0])
+                : null,
+            "handValue2" => isset($playerHands[1])
+                ? $this->calculateHandValue($playerHands[1])
+                : null,
         ];
 
         return $this->render("game21/play.html.twig", $data);
@@ -113,8 +152,26 @@ class Game21Controller extends AbstractController
         $playerMoney = $session->get("game21_money");
         $betAmount = $session->get("game21_bet");
 
-        // Check if the player busts (hand value exceeds 21)
-        $handValue = $this->calculateHandValue($playerHand);
+        // Calculate the hand value
+        $handValue = $this->calculateHandValue($playerHand->getCards());
+
+        // Handle split hands:
+        $playerHands = $session->get("game21_player_hands", []);
+        $currentIndex = $session->get("game21_current_hand_index", 0);
+
+        // Check if there are split hands
+        if (!empty($playerHands)) {
+            $playerHand = $playerHands[$currentIndex];
+            $playerHand->addCard($drawnCard);
+            $playerHands[$currentIndex] = $playerHand; // Update the modified hand back to the array
+            $session->set("game21_player_hands", $playerHands);
+        } else {
+            $playerHand->addCard($drawnCard);
+            $session->set("game21_player_hand", $playerHand);
+        }
+        $hasSplit = count($playerHands) === 2;
+
+        // If player busts
         if ($handValue > 21) {
             // Player busts, render the result template with a message
             $playerMoney = $session->get("game21_money");
@@ -129,16 +186,23 @@ class Game21Controller extends AbstractController
             if ($playerMoney <= 0) {
                 return $this->render("game21/gameover.html.twig");
             }
-
             return $this->render("game21/result.html.twig", $data);
         }
 
-        // Player hasn't bust, render the game21 play template with player's and dealer's hands
+        // If this is a split hand and the first hand, switch to the second hand:
+        if (!empty($playerHands) && $currentIndex == 0) {
+            $session->set("game21_current_hand_index", 1);
+            return $this->redirectToRoute("game21_play");
+        }
+
+        // Else, the game goes on
         $data = [
             "playerHand" => $playerHand->getCards(),
             "dealerHand" => $dealerHand->getCards(),
             "handValue" => $handValue,
             "playerMoney" => $playerMoney,
+            "canSplit" => $this->canSplit($playerHand),
+            "hasSplit" => $hasSplit,
         ];
         return $this->render("game21/play.html.twig", $data);
     }
@@ -157,6 +221,19 @@ class Game21Controller extends AbstractController
         while ($this->calculateHandValue($dealerHand) < 17) {
             $newCard = $deck->drawCard();
             $dealerHand->addCard($newCard);
+        }
+
+        $playerHands = $session->get("game21_player_hands", []);
+        $currentIndex = $session->get("game21_current_hand_index", 0);
+
+        // If there are split hands, determine the outcome for the active hand
+        if (!empty($playerHands)) {
+            $playerHand = $playerHands[$currentIndex];
+            $playerHandValue = $this->calculateHandValue($playerHand);
+        } else {
+            $playerHandValue = $this->calculateHandValue(
+                $session->get("game21_player_hand")
+            );
         }
 
         // Save the updated deck and dealer's hand to the session
@@ -197,6 +274,40 @@ class Game21Controller extends AbstractController
         return $this->render("game21/result.html.twig", $data);
     }
 
+    #[Route("/game21/split", name: "game21_split")]
+    public function split(SessionInterface $session): Response
+    {
+        $deck = $session->get("game21_deck");
+        $playerHand = $session->get("game21_player_hand");
+
+        $playerMoney = $session->get("game21_money");
+        $betAmount = $session->get("game21_bet");
+
+        if ($playerMoney < $betAmount * 2) {
+            // Not enough money to split, redirect or show an error message.
+            return $this->redirectToRoute("game21_play");
+        }
+
+        // Split the player hand.
+        $splitCard = $playerHand->removeLastCard();
+        $playerSplitHand = new CardHand();
+        $playerSplitHand->addCard($splitCard);
+
+        // Draw a card for each hand.
+        $playerHand->addCard($deck->drawCard());
+        $playerSplitHand->addCard($deck->drawCard());
+
+        // Deduct the additional bet amount for the split hand.
+        $playerMoney -= $betAmount;
+
+        $session->set("game21_deck", $deck);
+        $session->set("game21_player_hands", [$playerHand, $playerSplitHand]);
+        $session->set("game21_current_hand_index", 0); // Start with the first hand.
+        $session->set("game21_money", $playerMoney);
+
+        return $this->redirectToRoute("game21_play");
+    }
+
     /**
      * Calculates the value of a card hand considering Aces can be 1 or 11 points.
      *
@@ -229,5 +340,16 @@ class Game21Controller extends AbstractController
         }
 
         return $handValue;
+    }
+
+    private function canSplit(CardHand $hand)
+    {
+        if (
+            count($hand->getCards()) == 2 &&
+            $hand->getCards()[0]->getRank() == $hand->getCards()[1]->getRank()
+        ) {
+            return true;
+        }
+        return false;
     }
 }

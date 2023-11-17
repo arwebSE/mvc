@@ -258,6 +258,16 @@ nav {
             background-color: #388e3c; /* Even darker green */
         }
     }
+    &.warning {
+        background-color: #ff9800; /* Orange */
+        color: #fff;
+        &:hover {
+            background-color: #fb8c00; /* Darker orange */
+        }
+        &:active {
+            background-color: #f57c00; /* Even darker orange */
+        }
+    }
     &:disabled {
         opacity: 0.5;
         pointer-events: none;
@@ -619,4 +629,14 @@ footer {
 
 #betAmountInput {
     width: 50px !important;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .right {
+        margin-left: auto; // This will push the "right" element to the right side of the row.
+    }
 }
