@@ -4,20 +4,12 @@
           "splitTerminals": [
             {
               "name": "php server",
-              "commands": ["yarn php-server"]
+              "commands": ["npm run php-server"]
             },
             {
               "name": "webpack",
-              "commands": ["yarn watch"]
+              "commands": ["npm run watch"]
             },
-          ]
-        },
-        {
-          "splitTerminals": [
-            {
-              "name": "term",
-              "commands": ["echo 'hello'"]
-            }
           ]
         }
       ]
