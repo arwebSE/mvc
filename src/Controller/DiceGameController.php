@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,7 @@ class DiceGameController extends AbstractController
     public function testRollDice(int $num): Response
     {
         if ($num > 99) {
-            throw new \Exception("Can not roll more than 99 dice!");
+            throw new Exception("Can not roll more than 99 dice!");
         }
 
         $diceRoll = [];
@@ -61,7 +62,7 @@ class DiceGameController extends AbstractController
     public function testDiceHand(int $num): Response
     {
         if ($num > 99) {
-            throw new \Exception("Can not roll more than 99 dice!");
+            throw new Exception("Can not roll more than 99 dice!");
         }
 
         $hand = new DiceHand();

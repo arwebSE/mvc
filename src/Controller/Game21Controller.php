@@ -18,15 +18,13 @@ class Game21Controller extends AbstractController
     public function home(SessionInterface $session): Response
     {
         // Clear the session
-        session_start(); // if not already started
-        $_SESSION = [];
-        session_destroy();
-
+        $session->clear();
+        $session->invalidate();
         return $this->render("game21/home.html.twig");
     }
 
     #[Route("/game/doc", name: "game21_doc")]
-    public function doc(SessionInterface $session): Response
+    public function doc(): Response
     {
         return $this->render("game21/doc.html.twig");
     }
