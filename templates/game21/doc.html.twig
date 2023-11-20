@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Card Game
+{% endblock %}
+
+{% block content %}
+    <h1>
+        BlackJack Documentation
+    </h1>
+
+    <h2>
+        Flowchart
+    </h2>
+    <img class="image" src="{{ asset('img/flowchart.png') }}" alt="flowchart" />
+    <p>
+        A flowchart of the BlackJack game system.
+    </p>
+
+    <br /><br />
+
+    <h2>
+        Pseudo Code
+    </h2>
+
+    <img class="image" src="{{ asset('img/pseudo.png') }}" alt="pseudo code" />
+    <p>
+        Pseudo code for the game system.
+    </p>
+
+    <h2>
+        Classes Description
+    </h2>
+
+    <ul>
+        <li>
+            Card.php: Defines a Card class with suit and rank attributes.
+            Provides methods to get card details and suit symbols.
+        </li>
+        <li>
+            CardHand.php: Represents a collection of Card objects. Allows
+            adding, removing cards, and retrieving card details.
+        </li>
+        <li>
+            DeckOfCards.php: Represents a deck of cards. Initializes with all
+            card combinations, allows shuffling, drawing, and sorting cards.
+        </li>
+    </ul>
+
+    <br /><br />
+
+    <style>
+        h1 { border-bottom: 4px double green; } .image { width: 60%; }
+    </style>
+{% endblock %}
