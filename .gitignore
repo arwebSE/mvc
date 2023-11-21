@@ -34,3 +34,4 @@ tools/phpmd/vendor/
 tools/php-cs-fixer/vendor/
 
 *.cache
+.phpdoc/
