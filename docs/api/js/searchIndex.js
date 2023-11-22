@@ -3,32 +3,32 @@ Search.appendIndex(
                 {
             "fqsen": "\\App\\Card\\Card",
             "name": "Card",
-            "summary": "",
+            "summary": "Represents\u0020a\u0020playing\u0020card\u0020with\u0020a\u0020suit\u0020and\u0020a\u0020rank.",
             "url": "classes/App-Card-Card.html"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructs\u0020a\u0020new\u0020Card\u0020instance.",
             "url": "classes/App-Card-Card.html#method___construct"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetSuit\u0028\u0029",
             "name": "getSuit",
-            "summary": "",
+            "summary": "Gets\u0020the\u0020suit\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-Card.html#method_getSuit"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetRank\u0028\u0029",
             "name": "getRank",
-            "summary": "",
+            "summary": "Gets\u0020the\u0020rank\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-Card.html#method_getRank"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetAsString\u0028\u0029",
             "name": "getAsString",
-            "summary": "",
+            "summary": "Returns\u0020a\u0020string\u0020representation\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-Card.html#method_getAsString"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetSuitSymbol\u0028\u0029",
             "name": "getSuitSymbol",
-            "summary": "",
+            "summary": "Gets\u0020the\u0020symbol\u0020of\u0020the\u0020card\u0027s\u0020suit.",
             "url": "classes/App-Card-Card.html#method_getSuitSymbol"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003A\u0024suit",
