@@ -45,6 +45,10 @@ class DeckOfCards
         return count($this->cards);
     }
 
+    /**
+     * Draws a card from the deck.
+     * @return Card|null Returns a Card object or null if the deck is empty.
+     */
     public function drawCard(): ?Card
     {
         if (empty($this->cards)) {
