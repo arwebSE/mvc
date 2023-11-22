@@ -48,10 +48,10 @@ class Game21Controller extends AbstractController
         // Always deal two cards to the player and the dealer
         $playerHand = new CardHand();
         $dealerHand = new CardHand();
-        $playerHand->addCard($deck->drawCard());
-        $playerHand->addCard($deck->drawCard());
-        $dealerHand->addCard($deck->drawCard());
-        $dealerHand->addCard($deck->drawCard());
+        $this->drawAndAddCard($deck, $playerHand);
+        $this->drawAndAddCard($deck, $playerHand);
+        $this->drawAndAddCard($deck, $dealerHand);
+        $this->drawAndAddCard($deck, $dealerHand);
 
         // Always save the new deck and hands to the session
         $session->set("game21_deck", $deck);
@@ -85,7 +85,13 @@ class Game21Controller extends AbstractController
 
         // get session data
         $playerHand = $session->get("game21_player_hand");
+        if (!$playerHand instanceof CardHand) {
+            throw new \Exception("Player hand not found in session.");
+        }
         $dealerHand = $session->get("game21_dealer_hand");
+        if (!$dealerHand instanceof CardHand) {
+            throw new \Exception("Dealer hand not found in session.");
+        }
 
         // Render the game21 play template with player's and dealer's hands
         $data = [
@@ -103,13 +109,25 @@ class Game21Controller extends AbstractController
     public function hit(SessionInterface $session): Response
     {
         // Draw a new card from the deck and add it to the player's hand
+        // get session data
         $deck = $session->get("game21_deck");
+        if (!$deck instanceof DeckOfCards) {
+            throw new \Exception("Card deck not found in session.");
+        }
         $playerHand = $session->get("game21_player_hand");
+        if (!$playerHand instanceof CardHand) {
+            throw new \Exception("Player hand not found in session.");
+        }
         $dealerHand = $session->get("game21_dealer_hand");
+        if (!$dealerHand instanceof CardHand) {
+            throw new \Exception("Dealer hand not found in session.");
+        }
 
         // Draw a new card from the deck and add it to the player's hand
         $drawnCard = $deck->drawCard();
-        $playerHand->addCard($drawnCard);
+        if ($drawnCard !== null) {
+            $playerHand->addCard($drawnCard);
+        }
 
         // Save the updated deck and player's hand to the session
         $session->set("game21_deck", $deck);
@@ -153,8 +171,15 @@ class Game21Controller extends AbstractController
     #[Route("/game21/stand", name: "game21_stand")]
     public function stand(SessionInterface $session): Response
     {
+        // get session data
         $deck = $session->get("game21_deck");
+        if (!$deck instanceof DeckOfCards) {
+            throw new \Exception("Card deck not found in session.");
+        }
         $dealerHand = $session->get("game21_dealer_hand");
+        if (!$dealerHand instanceof CardHand) {
+            throw new \Exception("Dealer hand not found in session.");
+        }
 
         // Get the player's money from the session
         $playerMoney = $session->get("game21_money");
@@ -162,18 +187,31 @@ class Game21Controller extends AbstractController
 
         // Dealer draws cards until the hand value is at least 17
         while ($this->calculateHandValue($dealerHand) < 17) {
-            $newCard = $deck->drawCard();
-            $dealerHand->addCard($newCard);
+            $drawnCard = $deck->drawCard();
+            if ($drawnCard !== null) {
+                $dealerHand->addCard($drawnCard);
+            }
         }
 
         // Save the updated deck and dealer's hand to the session
         $session->set("game21_deck", $deck);
         $session->set("game21_dealer_hand", $dealerHand);
+        // get session data
+        $deck = $session->get("game21_deck");
+        if (!$deck instanceof DeckOfCards) {
+            throw new \Exception("Card deck not found in session.");
+        }
+        $playerHand = $session->get("game21_player_hand");
+        if (!$playerHand instanceof CardHand) {
+            throw new \Exception("Player hand not found in session.");
+        }
+        $dealerHand = $session->get("game21_dealer_hand");
+        if (!$dealerHand instanceof CardHand) {
+            throw new \Exception("Dealer hand not found in session.");
+        }
 
         // Calculate the final result
-        $playerHandValue = $this->calculateHandValue(
-            $session->get("game21_player_hand")
-        );
+        $playerHandValue = $this->calculateHandValue($playerHand);
         $dealerHandValue = $this->calculateHandValue($dealerHand);
 
         // Determine the winner or if it's a tie
@@ -196,7 +234,7 @@ class Game21Controller extends AbstractController
 
         // Render the result template with the final outcome
         $data = [
-            "playerHand" => $session->get("game21_player_hand")->getCards(),
+            "playerHand" => $playerHand->getCards(),
             "dealerHand" => $dealerHand->getCards(),
             "result" => $result,
             "playerMoney" => $playerMoney,
@@ -236,5 +274,19 @@ class Game21Controller extends AbstractController
         }
 
         return $handValue;
+    }
+
+    /**
+     * Draws a card from the deck and adds it to the specified hand if it's not null.
+     *
+     * @param DeckOfCards $deck The deck of cards to draw from.
+     * @param CardHand $hand The hand to which the card will be added.
+     */
+    private function drawAndAddCard(DeckOfCards $deck, CardHand $hand): void
+    {
+        $card = $deck->drawCard();
+        if ($card !== null) {
+            $hand->addCard($card);
+        }
     }
 }

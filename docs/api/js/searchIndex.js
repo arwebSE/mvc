@@ -113,7 +113,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AdrawCard\u0028\u0029",
             "name": "drawCard",
-            "summary": "",
+            "summary": "Draws\u0020a\u0020card\u0020from\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_drawCard"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AsortDeck\u0028\u0029",
@@ -265,6 +265,11 @@ Search.appendIndex(
             "name": "calculateHandValue",
             "summary": "Calculates\u0020the\u0020value\u0020of\u0020a\u0020card\u0020hand\u0020considering\u0020Aces\u0020can\u0020be\u00201\u0020or\u002011\u0020points.",
             "url": "classes/App-Controller-Game21Controller.html#method_calculateHandValue"
+        },                {
+            "fqsen": "\\App\\Controller\\Game21Controller\u003A\u003AdrawAndAddCard\u0028\u0029",
+            "name": "drawAndAddCard",
+            "summary": "Draws\u0020a\u0020card\u0020from\u0020the\u0020deck\u0020and\u0020adds\u0020it\u0020to\u0020the\u0020specified\u0020hand\u0020if\u0020it\u0027s\u0020not\u0020null.",
+            "url": "classes/App-Controller-Game21Controller.html#method_drawAndAddCard"
         },                {
             "fqsen": "\\App\\Controller\\JsonController",
             "name": "JsonController",

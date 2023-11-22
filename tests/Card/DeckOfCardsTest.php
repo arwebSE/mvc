@@ -6,14 +6,14 @@ use PHPUnit\Framework\TestCase;
 
 class DeckOfCardsTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $deck = new DeckOfCards();
         $this->assertCount(52, $deck->getDeck());
         $this->assertInstanceOf("\App\Card\DeckOfCards", $deck);
     }
 
-    public function testShuffle()
+    public function testShuffle(): void
     {
         $deck = new DeckOfCards();
         $deckBeforeShuffle = $deck->getDeck();
@@ -22,20 +22,20 @@ class DeckOfCardsTest extends TestCase
         $this->assertNotEquals($deckBeforeShuffle, $deck->getDeck());
     }
 
-    public function testCountCards()
+    public function testCountCards(): void
     {
         $deck = new DeckOfCards();
         $this->assertEquals(52, $deck->countCards());
     }
 
-    public function testDrawCard()
+    public function testDrawCard(): void
     {
         $deck = new DeckOfCards();
         $deck->drawCard();
         $this->assertEquals(51, $deck->countCards());
     }
 
-    public function testDrawCardEmptyDeck()
+    public function testDrawCardEmptyDeck(): void
     {
         $deck = new DeckOfCards();
         for ($i = 0; $i < 52; $i++) {
@@ -44,7 +44,7 @@ class DeckOfCardsTest extends TestCase
         $this->assertNull($deck->drawCard());
     }
 
-    public function testSortDeck()
+    public function testSortDeck(): void
     {
         $deck = new DeckOfCards();
         $deck->shuffle();
@@ -61,7 +61,7 @@ class DeckOfCardsTest extends TestCase
         $this->assertEquals("A", $sortedCards[$lastIndex]->getRank());
     }
 
-    public function testGetDeck()
+    public function testGetDeck(): void
     {
         $deck = new DeckOfCards();
         $this->assertIsArray($deck->getDeck());
