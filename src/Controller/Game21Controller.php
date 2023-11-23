@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Card\DeckOfCards;
 use App\Card\Card;
 use App\Card\CardHand;
+use Exception;
 
 class Game21Controller extends AbstractController
 {
@@ -86,11 +87,11 @@ class Game21Controller extends AbstractController
         // get session data
         $playerHand = $session->get("game21_player_hand");
         if (!$playerHand instanceof CardHand) {
-            throw new \Exception("Player hand not found in session.");
+            throw new Exception("Player hand not found in session.");
         }
         $dealerHand = $session->get("game21_dealer_hand");
         if (!$dealerHand instanceof CardHand) {
-            throw new \Exception("Dealer hand not found in session.");
+            throw new Exception("Dealer hand not found in session.");
         }
 
         // Render the game21 play template with player's and dealer's hands
@@ -112,15 +113,15 @@ class Game21Controller extends AbstractController
         // get session data
         $deck = $session->get("game21_deck");
         if (!$deck instanceof DeckOfCards) {
-            throw new \Exception("Card deck not found in session.");
+            throw new Exception("Card deck not found in session.");
         }
         $playerHand = $session->get("game21_player_hand");
         if (!$playerHand instanceof CardHand) {
-            throw new \Exception("Player hand not found in session.");
+            throw new Exception("Player hand not found in session.");
         }
         $dealerHand = $session->get("game21_dealer_hand");
         if (!$dealerHand instanceof CardHand) {
-            throw new \Exception("Dealer hand not found in session.");
+            throw new Exception("Dealer hand not found in session.");
         }
 
         // Draw a new card from the deck and add it to the player's hand
@@ -174,11 +175,11 @@ class Game21Controller extends AbstractController
         // get session data
         $deck = $session->get("game21_deck");
         if (!$deck instanceof DeckOfCards) {
-            throw new \Exception("Card deck not found in session.");
+            throw new Exception("Card deck not found in session.");
         }
         $dealerHand = $session->get("game21_dealer_hand");
         if (!$dealerHand instanceof CardHand) {
-            throw new \Exception("Dealer hand not found in session.");
+            throw new Exception("Dealer hand not found in session.");
         }
 
         // Get the player's money from the session
@@ -199,15 +200,15 @@ class Game21Controller extends AbstractController
         // get session data
         $deck = $session->get("game21_deck");
         if (!$deck instanceof DeckOfCards) {
-            throw new \Exception("Card deck not found in session.");
+            throw new Exception("Card deck not found in session.");
         }
         $playerHand = $session->get("game21_player_hand");
         if (!$playerHand instanceof CardHand) {
-            throw new \Exception("Player hand not found in session.");
+            throw new Exception("Player hand not found in session.");
         }
         $dealerHand = $session->get("game21_dealer_hand");
         if (!$dealerHand instanceof CardHand) {
-            throw new \Exception("Dealer hand not found in session.");
+            throw new Exception("Dealer hand not found in session.");
         }
 
         // Calculate the final result

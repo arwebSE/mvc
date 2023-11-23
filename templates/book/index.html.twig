@@ -1,19 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Hello BookController!
+    Book Details
 {% endblock %}
 
 {% block content %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font:
-        18px/1.5 sans-serif; } .example-wrapper code { background: #F5F5F5;
-        padding: 2px 6px; }
-    </style>
+    <h1>
+        {{ book.title }}
+    </h1>
+    <p>
+        Author: {{ book.author }}
+    </p>
+    <p>
+        ISBN: {{ book.isbn }}
+    </p>
+    <!-- Add more details as needed -->
+    <img src="{{ book.image }}" alt="Book Image" style="max-height: 50vh;" />
 
-    <div class="example-wrapper">
-        <h1>
-            Hello {{ controller_name }}! ✅
-        
+    <br /><br />
+
+    <div class="form-actions">
+        <form action="{{
+            path(
+                'book_edit',
+                {
+                    id: book.id
+                }
+            )
+            }}"
+            method="post">
+            <input type="submit" value="Edit Book" class="button primary" />
+        </form>
+
+        <form action="{{
+            path(
+                'book_delete',
+                {
+                    isbn: book.isbn
+                }
+            )
+            }}"
+            method="post"
+            onsubmit="return confirm('Are you sure you want to delete this book?');">
+            <input type="hidden"
+                name="_token"
+                value="{{ csrf_token('delete' ~ book.id) }}" />
+            <input type="submit" value="Delete Book" class="button danger" />
+        </form>
     </div>
+
+    <style>
+        .form-actions { display: flex; gap: 10px; } .form-actions form { margin:
+        0; }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    <aside id="sidebar">
+        <h1>
+            Links
+        </h1>
+        <a href="{{ path('library_show') }}">Go back to Library</a>
+    </aside>
 {% endblock %}

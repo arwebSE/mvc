@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 use App\Card\DeckOfCards;
 use App\Card\Card;
@@ -262,12 +263,39 @@ class JsonController extends AbstractController
         BookRepository $bookRepo,
         string $isbn
     ): Response {
-        $book = $bookRepo->find($isbn);
+        $book = $bookRepo->findOneByIsbn($isbn);
 
-        $response = $this->json($book);
+        if (!$book) {
+            return $this->json(
+                ["message" => "Book not found"],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $response = $this->json($book, Response::HTTP_OK);
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT
         );
         return $response;
+    }
+
+    #[Route("/api/library/book/delete/{id}", name: "book_delete_by_id")]
+    public function deleteBookById(
+        ManagerRegistry $doctrine,
+        int $bookId
+    ): Response {
+        $entityManager = $doctrine->getManager();
+        $book = $entityManager->getRepository(Book::class)->find($bookId);
+
+        if (!$book) {
+            throw $this->createNotFoundException(
+                "No book found for id " . $bookId
+            );
+        }
+
+        $entityManager->remove($book);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("book_show_all");
     }
 }

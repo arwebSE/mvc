@@ -66,6 +66,31 @@
                     number of cards to a number of players (2 players, 5 cards)
                 </form>
             </li>
+
+            <li>
+                <form action="{{ path('book_show_all') }}" method="get">
+                    <input class="button primary"
+                        type="submit"
+                        value="GET /api/library/books" />- shows all books
+                </form>
+            </li>
+
+            <li>
+                <form action="{{
+                    path(
+                        'book_by_isbn',
+                        {
+                            isbn: '9780544003415'
+                        }
+                    )
+                    }}"
+                    method="post">
+                    <input class="button primary"
+                        type="submit"
+                        value="POST /api/library/book/9780544003415" />- shows
+                    info about one particular book
+                </form>
+            </li>
         </ul>
     </p>
 {% endblock %}

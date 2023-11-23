@@ -1,16 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    About
+    Library
 {% endblock %}
 
 {% block content %}
     <h1>
         Library
     </h1>
-    <p>
-        hej
-    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Author
+                </th>
+                <!-- Add more headers if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>
+                        <a href="{{
+                            path(
+                                'book_show',
+                                {
+                                    isbn: book.isbn
+                                }
+                            )
+                            }}">
+                            {{ book.title }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ book.author }}
+                    </td>
+                    <!-- Add more columns if needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block sidebar %}
@@ -18,5 +50,9 @@
         <h1>
             Links
         </h1>
+        <a href="{{ path('library_reset') }}">RESET library</a>
+        <p>
+            Create new book: <a href="{{ path('book_create') }}">Create Book</a>
+        </p>
     </aside>
 {% endblock %}
