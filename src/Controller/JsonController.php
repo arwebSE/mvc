@@ -279,17 +279,17 @@ class JsonController extends AbstractController
         return $response;
     }
 
-    #[Route("/api/library/book/delete/{id}", name: "book_delete_by_id")]
+    #[Route("/api/library/book/delete/{bookid}", name: "book_delete_by_id")]
     public function deleteBookById(
         ManagerRegistry $doctrine,
-        int $bookId
+        int $bookid
     ): Response {
         $entityManager = $doctrine->getManager();
-        $book = $entityManager->getRepository(Book::class)->find($bookId);
+        $book = $entityManager->getRepository(Book::class)->find($bookid);
 
         if (!$book) {
             throw $this->createNotFoundException(
-                "No book found for id " . $bookId
+                "No book found for id " . $bookid
             );
         }
 

@@ -39,18 +39,18 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route("/book/edit/{id}", name: "book_edit")]
+    #[Route("/book/edit/{bookid}", name: "book_edit")]
     public function editBook(
         Request $request,
         ManagerRegistry $doctrine,
-        int $bookId
+        int $bookid
     ): Response {
         $entityManager = $doctrine->getManager();
-        $book = $entityManager->getRepository(Book::class)->find($bookId);
+        $book = $entityManager->getRepository(Book::class)->find($bookid);
 
         if (!$book) {
             throw $this->createNotFoundException(
-                "No book found for id " . $bookId
+                "No book found for id " . $bookid
             );
         }
 
