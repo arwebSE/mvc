@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -11,6 +12,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Card\DeckOfCards;
 use App\Card\Card;
 use App\Card\CardHand;
+
+use App\Repository\BookRepository;
+use App\Entity\Book;
 
 class JsonController extends AbstractController
 {
@@ -239,5 +243,31 @@ class JsonController extends AbstractController
         ];
 
         return new JsonResponse($data);
+    }
+
+    #[Route("/api/library/books", name: "book_show_all")]
+    public function showAllBooks(BookRepository $bookRepo): Response
+    {
+        $books = $bookRepo->findAll();
+
+        $response = $this->json($books);
+        $response->setEncodingOptions(
+            $response->getEncodingOptions() | JSON_PRETTY_PRINT
+        );
+        return $response;
+    }
+
+    #[Route("/api/library/book/{isbn}", name: "book_by_isbn")]
+    public function showBookById(
+        BookRepository $bookRepo,
+        string $isbn
+    ): Response {
+        $book = $bookRepo->find($isbn);
+
+        $response = $this->json($book);
+        $response->setEncodingOptions(
+            $response->getEncodingOptions() | JSON_PRETTY_PRINT
+        );
+        return $response;
     }
 }
