@@ -1,16 +1,307 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Metrics Analys
+    Metrics Analysis
 {% endblock %}
 
 {% block content %}
     <h1>
-        Metrics Analys
+        Metrics Analysis
     </h1>
+
+    <a href="https://scrutinizer-ci.com/g/arwebSE/mvc/build-status/main">
+        <img src="https://scrutinizer-ci.com/g/arwebSE/mvc/badges/build.png?b=main"
+            alt="Build Status" />
+    </a>
+
+    <a href="https://scrutinizer-ci.com/g/arwebSE/mvc/?branch=main">
+        <img src="https://scrutinizer-ci.com/g/arwebSE/mvc/badges/coverage.png?b=main"
+            alt="Code Coverage" />
+    </a>
+
+    <a href="https://scrutinizer-ci.com/g/arwebSE/mvc/?branch=main">
+        <img src="https://scrutinizer-ci.com/g/arwebSE/mvc/badges/quality-score.png?b=main"
+            alt="Scrutinizer Code Quality" />
+    </a>
+
+    <h2>
+        Introduction
+    </h2>
     <p>
-        blabla
+        <p>
+            The six C&#39;s are essential principles in software development,
+            significantly impacting code quality.
+        </p>
+        <ol>
+            <li>
+                <p>
+                    <strong>Clarity</strong>: Clarity ensures code is easy to
+                    understand and read. PHPMetrics "Comment" lines of code (217
+                    lines) suggest a clear effort towards making the code
+                    understandable. High clarity in code leads to easier
+                    maintenance.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Correctness</strong>: Correctness refers to how
+                    accurately the code meets its requirements. The PHPMetrics
+                    "Bugs" metric, showing an average of 0.19 bugs per class, is
+                    low, indicating a good level of correctness. Fewer bugs
+                    imply that the code is functioning as intended and is
+                    reliable.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Consistency</strong>: Consistency in coding
+                    standards and practices across the codebase makes the code
+                    predictable and easier to manage. The Lack of cohesion of
+                    methods at 1.59 suggests that methods in classes are
+                    consistently relevant to each other, contributing to a more
+                    maintainable and understandable codebase.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Completeness</strong>: This aspect involves
+                    fulfilling all specified requirements. Although PHPMetrics
+                    doesn&#39;t directly measure completeness, the overall
+                    structure, such as the number of Classes (17) and Methods
+                    (77), can give an insight into whether the codebase is
+                    extensive enough to cover the required functionality.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Conciseness</strong>: Conciseness is about keeping
+                    the code succinct without compromising functionality or
+                    clarity. The ratio of Logical lines of code (866) to total
+                    lines of code (1083) suggests a balance between being
+                    verbose and being too terse, pointing to a concise codebase.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Changeability</strong>: This denotes the ease of
+                    updating or modifying the code. Metrics like Average
+                    afferent coupling (1.06) and Average efferent coupling
+                    (3.12) provide insights into how intertwined different parts
+                    of the code are. Lower coupling values often indicate that
+                    the code can be changed with less impact on other
+                    components.
+                </p>
+            </li>
+        </ol>
     </p>
+
+    <h2>
+        PHPMetrics
+    </h2>
+    <p>
+        <p>
+            Three points indicating areas for improvement in the code, according
+            to PHPMetrics:
+        </p>
+        <ol>
+            <li>
+                <p>
+                    Controller Bugs: <code>CardGameController</code>, <code>
+                        DiceGameController
+                    </code>, and <code>Game21Controller</code> are marked as &quot;Probably
+                    bugged&quot;. This suggests potential logic errors.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Complex Controller: <code>Game21Controller</code> has &quot;Too
+                    complex method code&quot;, indicating a need for simplification.
+                </p>
+            </li>
+            <li>
+                <p>
+                    God Object: <code>JsonController</code> is labeled a &quot;Blob
+                    / God object&quot;, suggesting it&#39;s handling too many tasks
+                    and needs refactoring for better responsibility separation.
+                </p>
+            </li>
+        </ol>
+    </p>
+
+    <h2>
+        Scrutinizer
+    </h2>
+    <p>
+        <p>
+            Based on the Scrutinizer report, there are three critical weak
+            points identified in the code:
+        </p>
+        <ol>
+            <li>
+                <p>
+                    Controller Complexity: <code>Game21Controller</code> has operations
+                    like <code>stand()</code> and <code>hit()</code> with high complexity
+                    ratings. This complexity might make the code hard to understand
+                    and maintain. Perhaps it would be a good idea to divide the code
+                    a bit more and maybe use helper functions.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Insufficient Testing: <code>BookController</code>, <code>
+                        DiceHand
+                    </code>, and <code>Game21Controller</code> and many more parts
+                    are not covered by tests. An improvement could be to make more
+                    tests to avoid bugs.
+                </p>
+            </li>
+            <li>
+                <p>
+                    High CRAP Score Operations: Operations such as <code>
+                        Game21Controller::stand()
+                    </code> have high CRAP (Change Risk Anti-Patterns) scores, indicating
+                    a combination of high complexity and low test coverage, which
+                    increases the risk of changes leading to defects.
+                </p>
+            </li>
+        </ol>
+    </p>
+
+    <h2>
+        Findings
+    </h2>
+    <p>
+        <ol>
+            <li>
+                <p>
+                    Clarity (Complexity Issues):
+                </p>
+                <ul>
+                    <li>
+                        The complexity in <code>Game21Controller</code> (PHPMetrics)
+                        and the high complexity ratings of operations like <code>
+                            stand()
+                        </code> and <code>hit()</code> in <code>
+                            Game21Controller
+                        </code> (Scrutinizer) indicate a lack of clarity. Simplifying
+                        these methods and possibly breaking down complex logic into
+                        smaller, more manageable functions would enhance clarity.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    Correctness (Controller Bugs and High CRAP Score):
+                </p>
+                <ul>
+                    <li>
+                        The &quot;Probably bugged&quot; controllers (<code>
+                            CardGameController
+                        </code>, <code>DiceGameController</code>, <code>
+                            Game21Controller
+                        </code>) identified by PHPMetrics and high CRAP scores
+                        in Scrutinizer suggest issues with correctness.
+                        Refactoring these parts of the code and implementing
+                        thorough testing could improve the correctness of the
+                        application.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    Consistency (God Object):
+                </p>
+                <ul>
+                    <li>
+                        The identification of <code>JsonController</code> as a &quot;God
+                        object&quot; (PHPMetrics) indicates a lack of consistency
+                        in responsibility distribution. Breaking down this God object
+                        into smaller, more focused classes would not only improve
+                        consistency but also enhance the overall structure and maintainability.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    Completeness (Insufficient Testing):
+                </p>
+                <ul>
+                    <li>
+                        The lack of test coverage for <code>
+                            BookController
+                        </code>, <code>DiceHand</code>, <code>
+                            Game21Controller
+                        </code>, and others (Scrutinizer) highlights a gap in
+                        completeness. Expanding unit and integration tests would
+                        ensure more complete coverage and robustness of the
+                        code.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    Conciseness (High Complexity and God Object):
+                </p>
+                <ul>
+                    <li>
+                        The high complexity in certain controllers and the
+                        existence of a God object point towards a lack of
+                        conciseness. Refactoring to eliminate unnecessary
+                        complexity and splitting large objects into smaller,
+                        more focused entities would aid in achieving more
+                        concise code.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    Changeability (High CRAP Score and Complexity):
+                </p>
+                <ul>
+                    <li>
+                        The high CRAP scores and complex controllers identified
+                        indicate that changeability could be an issue. Lowering
+                        complexity and increasing test coverage would make the
+                        code more adaptable and easier to modify without
+                        introducing errors.
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </p>
+
+    <h2>
+        Improvements
+    </h2>
+    <p>
+        I plan to make the following three key improvements to my code:
+    </p>
+    <ol>
+        <li>
+            <p>
+                Fix Issues: I&#39;ll try to squash bugs in <code>
+                    CardGameController
+                </code>, <code>DiceGameController</code>, or <code>
+                    Game21Controller
+                </code>.
+            </p>
+        </li>
+        <li>
+            <p>
+                Increase Code Coverage: I&#39;ll write some additional test for
+                one of the untested areas like <code>BookController</code> or <code>
+                    Game21Controller
+                </code>. Then I'll check if the score has increased.
+            </p>
+        </li>
+        <li>
+            <p>
+                Reduce Complexity: I&#39;ll try to refactor some complex methods
+                in <code>Game21Controller</code>, to lower their Cyclomatic
+                complexity.
+            </p>
+        </li>
+    </ol>
 {% endblock %}
 
 {% block sidebar %}
