@@ -280,18 +280,16 @@
         <li>
             <p>
                 Fix Issues: I&#39;ll try to squash bugs in <code>
-                    CardGameController
-                </code>, <code>DiceGameController</code>, or <code>
-                    Game21Controller
-                </code>.
+                    JsonController.php
+                </code>, there is an issue according to Scrutinizer, about a
+                DocBlock.
             </p>
         </li>
         <li>
             <p>
-                Increase Code Coverage: I&#39;ll write some additional test for
-                one of the untested areas like <code>BookController</code> or <code>
-                    Game21Controller
-                </code>. Then I'll check if the score has increased.
+                Reduce Class Violations: I&#39;ll try to reduce Class Violations
+                by working on <code>JsonController</code>. Then I'll check if
+                the Violations number has decreased.
             </p>
         </li>
         <li>
@@ -302,6 +300,20 @@
             </p>
         </li>
     </ol>
+    <h4>
+        Improvements Results
+    </h4>
+    <p>
+        I implemented a few changes to JsonController. The first one was
+        adressing the issue raised by Scrutinizer. It said "The doc comment
+        array at position 2 could not be parsed: the token is null at position
+        2.". I fixed this by simplifying the DocBlock. Continuing, I targeted
+        JsonController again but looked at PhpMetrics Class Violations. It said
+        that JsonController is a "Blob / God object" and "Probably Bugged". I
+        extracted the CardGame related code and put it in a new controller file.
+        After doing that I saw a reduction of the Violations count. Also
+        "Average relative System Complexity" was reduced by -20.74!
+    </p>
 {% endblock %}
 
 {% block sidebar %}
