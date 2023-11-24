@@ -86,10 +86,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Card-CardHand.html#method_getCardStrings"
         },                {
+            "fqsen": "\\App\\Card\\CardHand\u003A\u003AsetStatus\u0028\u0029",
+            "name": "setStatus",
+            "summary": "",
+            "url": "classes/App-Card-CardHand.html#method_setStatus"
+        },                {
+            "fqsen": "\\App\\Card\\CardHand\u003A\u003AgetStatus\u0028\u0029",
+            "name": "getStatus",
+            "summary": "",
+            "url": "classes/App-Card-CardHand.html#method_getStatus"
+        },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003A\u0024cards",
             "name": "cards",
             "summary": "",
             "url": "classes/App-Card-CardHand.html#property_cards"
+        },                {
+            "fqsen": "\\App\\Card\\CardHand\u003A\u003A\u0024status",
+            "name": "status",
+            "summary": "",
+            "url": "classes/App-Card-CardHand.html#property_status"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards",
             "name": "DeckOfCards",
@@ -410,6 +425,61 @@ Search.appendIndex(
             "name": "metrics",
             "summary": "",
             "url": "classes/App-Controller-MainController.html#method_metrics"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController",
+            "name": "ProjController",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AprojAbout\u0028\u0029",
+            "name": "projAbout",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_projAbout"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AprojReset\u0028\u0029",
+            "name": "projReset",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_projReset"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Aproj\u0028\u0029",
+            "name": "proj",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_proj"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Aplay\u0028\u0029",
+            "name": "play",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_play"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Ahit\u0028\u0029",
+            "name": "hit",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_hit"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Astand\u0028\u0029",
+            "name": "stand",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_stand"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AprocessAction\u0028\u0029",
+            "name": "processAction",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_processAction"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AshowResults\u0028\u0029",
+            "name": "showResults",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_showResults"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AcalculateHandValue\u0028\u0029",
+            "name": "calculateHandValue",
+            "summary": "Calculates\u0020the\u0020value\u0020of\u0020a\u0020card\u0020hand\u0020considering\u0020Aces\u0020can\u0020be\u00201\u0020or\u002011\u0020points.",
+            "url": "classes/App-Controller-ProjController.html#method_calculateHandValue"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AdrawAndAddCard\u0028\u0029",
+            "name": "drawAndAddCard",
+            "summary": "Draws\u0020a\u0020card\u0020from\u0020the\u0020deck\u0020and\u0020adds\u0020it\u0020to\u0020the\u0020specified\u0020hand\u0020if\u0020it\u0027s\u0020not\u0020null.",
+            "url": "classes/App-Controller-ProjController.html#method_drawAndAddCard"
         },                {
             "fqsen": "\\App\\Dice\\Dice",
             "name": "Dice",
