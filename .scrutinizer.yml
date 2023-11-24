@@ -1,0 +1,24 @@
+imports:
+    - php
+
+filter:
+    excluded_paths: [vendor/*, test/*, tools/*]
+
+build:
+    image: default-bionic
+
+    nodes:
+        my-tests:
+            environment:
+                php:
+                    version: 8.2.12
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+    tests:
+        override:
+            - command: "composer phpunit"
+              coverage:
+                  file: "docs/coverage.clover"
+                  format: "php-clover"
