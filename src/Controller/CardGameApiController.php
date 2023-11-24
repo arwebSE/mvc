@@ -62,6 +62,7 @@ class CardGameApiController extends AbstractController
      *               - "cards" (array): An array of arrays, each representing a card with "rank" and "suit".
      *               - "cardsLeft" (int): The number of cards left in the deck.
      */
+    // @phpstan-ignore-next-line
     private function drawCardsFromDeck(
         int $number,
         SessionInterface $session

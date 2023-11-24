@@ -307,12 +307,27 @@
         I implemented a few changes to JsonController. The first one was
         adressing the issue raised by Scrutinizer. It said "The doc comment
         array at position 2 could not be parsed: the token is null at position
-        2.". I fixed this by simplifying the DocBlock. Continuing, I targeted
+        2.". I fixed this by simplifying the DocBlock, and after that,
+        Scrutinizer marked the issue as fixed. Continuing, I targeted
         JsonController again but looked at PhpMetrics Class Violations. It said
         that JsonController is a "Blob / God object" and "Probably Bugged". I
         extracted the CardGame related code and put it in a new controller file.
         After doing that I saw a reduction of the Violations count. Also
-        "Average relative System Complexity" was reduced by -20.74!
+        "Average relative System Complexity" was reduced by -20.74! "Average
+        cyclomatic complexity by class" was reduced by -0.26.
+    </p>
+
+    <h2>
+        Discussion
+    </h2>
+    <p>
+        I feel that it is possible to work with code quality and Clean Code in
+        this way. I think these tools give hints of what to fix, how to reduce
+        complexity and how to increase maintainability. The cons as I see it, is
+        that the tools can sometimes be overly aggressive or misleading.
+        Sometimes they can lead you to fix something that does not really need
+        fixing. Also , when i fixed something for Scrutinizer , PHPStan then
+        complained about the fix. So the tools are conflicting with eachother.
     </p>
 {% endblock %}
 
