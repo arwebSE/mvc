@@ -1,0 +1,21 @@
+{% extends 'proj.html.twig' %}
+
+{% block title %}
+    BJ - Game Over
+{% endblock %}
+
+{% block content %}
+    <h1>
+        BJ - Game Over
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    <h4 class="results"></h4>
+
+    <div class="container">
+        You ran out of money! =( Bank has been reset<div class="row mt">
+            <a class="button primary" href="{{ path('proj') }}">Start Over</a>
+        </div>
+    </div>
+{% endblock %}

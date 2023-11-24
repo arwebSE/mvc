@@ -1,0 +1,129 @@
+{% extends 'proj.html.twig' %}
+
+{% block title %}
+    BJ - Playing
+{% endblock %}
+
+{% block content %}
+    <h1>
+        BJ - Playing
+    </h1>
+
+    {{ include('flash.html.twig') }}
+
+    <h4 class="results"></h4>
+
+    <div class="container">
+        <div class="frame">
+            <div class="table">
+                <div class="logo">
+                    JackDash™
+                </div>
+
+                <div class="player">
+                    <p>
+                        Dealer
+                    </p>
+
+                    {% if
+                        dealerHand[0] is defined
+                            and dealerHand[0] is not empty %}
+                        <div class="card {{
+                            dealerHand[0].getSuit() == 'H'
+                                or dealerHand[0].getSuit() == 'D'
+                                ? 'red'
+                                : 'black'
+                            }}">
+                            <span class="rank">
+                                {{ attribute(dealerHand[0], 'getRank') }}
+                            </span>
+                            <span class="suit top">
+                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
+                            </span>
+                            <span class="suit bottom">
+                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
+                            </span>
+                        </div>
+                    {% else %}
+                        {# Handle the case when dealerHand[0] is not an object (e.g., it's a string or null) #}
+                        <div class="card error">
+                            <span class="bg">
+                                <span class="rank">Err</span>
+                            </span>
+                        </div>
+                    {% endif %}
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                </div>
+
+                {# Single Hand Visualization #}
+                <div class="player">
+                    {% for card in playerHand %}
+                        {% if card is defined and card is not empty %}
+                            <div class="card {{
+                                card.getSuit() == 'H' or card.getSuit() == 'D'
+                                    ? 'red'
+                                    : 'black'
+                                }}">
+                                <span class="rank">{{ card.getRank() }}</span>
+                                <span class="suit top">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                                <span class="suit bottom">
+                                    {{ card.getSuitSymbol() }}
+                                </span>
+                            </div>
+                        {% else %}
+                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
+                            <div class="card error">
+                                <span class="bg">
+                                    <span class="rank">Err</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="data-row">
+                        <p>
+                            You
+                        </p>
+                        <p class="right">
+                            {{ handValue }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt">
+            {% if handValue == 21 %}
+                <form action="{{ path('proj_stand') }}" method="post">
+                    <button class="button success" type="submit">Stand</button>
+                </form>
+            {% else %}
+                <form action="{{ path('proj_hit') }}" method="post">
+                    <button class="button primary" type="submit">Hit</button>
+                </form>
+                <form action="{{ path('proj_stand') }}" method="post">
+                    <button class="button success" type="submit">Stand</button>
+                </form>
+            {% endif %}
+
+            <a class="button danger" href="{{ path('proj') }}">Start Over</a>
+        </div>
+
+        <div class="bet-container mt">
+            <h5>
+                Current Bet: $<span id="displayedBet">{{ app.session.get(
+                        'bj_bet'
+                    )
+                        ?? 10 }}</span>
+            </h5>
+            <p>
+                Your Balance: ${{ playerMoney }}
+            </p>
+        </div>
+    </div>
+{% endblock %}

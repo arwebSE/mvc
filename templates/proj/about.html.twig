@@ -1,0 +1,108 @@
+{% extends 'proj.html.twig' %}
+
+{% block title %}
+    BlackJack
+{% endblock %}
+
+{% block content %}
+    <h1>
+        BlackJack
+    </h1>
+
+    <p>
+        Start the Game: <a href="{{ path('proj') }}" class="button primary">Play
+            Game</a>
+    </p>
+
+    <h2>
+        How to Play Blackjack
+    </h2>
+    <p>
+        Blackjack is a popular card game where the goal is to get as close to 21
+        points as possible without going over.
+    </p>
+
+    <h2>
+        Card Values
+    </h2>
+    <p>
+        Number cards (2 to 10) are worth their face value. Face cards (Jack,
+        Queen, King) are worth 10 points each. An Ace can be 1 or 11 points,
+        whichever is better for the player.
+    </p>
+
+    <h2>
+        Game Setup
+    </h2>
+    <p>
+        1. Gather a standard deck of 52 playing cards.<br />
+        2. Assign a dealer who will deal the cards.<br />
+        3. The dealer represents the house, and other players play against the dealer.
+    </p>
+
+    <h2>
+        Gameplay
+    </h2>
+    <p>
+        1. The dealer gives each player (including themselves) two face-up
+        cards.<br />
+        2. The dealer's first card is face-up, and the second card is face-down.<br />
+        3. Players take turns before the dealer's final turn.
+    </p>
+
+    <h2>
+        Player's Turn
+    </h2>
+    <p>
+        During their turn, a player can:<br />
+        1. <strong>Hit:</strong> Get another card from the dealer to increase their
+        hand total.<br />
+        2. <strong>Stand:</strong> Decline more cards and keep the current hand total.<br />
+    </p>
+
+    <h2>
+        Dealer's Turn
+    </h2>
+    <p>
+        After all players finish their turns, the dealer reveals their face-down
+        card and follows the house rules. Usually, the dealer must hit until
+        they have 17 or higher, then stand.
+    </p>
+
+    <h2>
+        Winning and Losing
+    </h2>
+    <p>
+        - If a player's hand total exceeds 21, they "bust" and lose their bet.<br />
+        - If the dealer busts, all remaining players win their bets.<br />
+        - If a player's hand is closer to 21 than the dealer's hand (without busting),
+        they win and receive a payout equal to their bet.<br />
+        - If the player and dealer have the same total, it's a "push," and the player
+        keeps their bet without additional winnings.
+    </p>
+
+    <h2>
+        Blackjack
+    </h2>
+    <p>
+        A "Blackjack" is an Ace and a 10-point card (10, Jack, Queen, or King)
+        in the initial two cards. It's the highest hand and often pays out at
+        3:2.
+    </p>
+
+    <h2>
+        Basic Strategy
+    </h2>
+    <p>
+        - Hit if your hand total is 11 or lower.<br />
+        - Stand if your hand total is 17 or higher.<br />
+        - If the dealer's face-up card is 7 or higher, continue hitting until your
+        hand total is 17 or higher.<br />
+        - With a soft hand (Ace in hand), you can be more aggressive in hitting without
+        busting.
+    </p>
+
+    <style>
+        h1 { border-bottom: 4px double green; }
+    </style>
+{% endblock %}

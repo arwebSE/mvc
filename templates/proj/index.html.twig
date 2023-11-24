@@ -1,0 +1,92 @@
+{% extends 'proj.html.twig' %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block content %}
+    <h1>
+        JackDash™
+    </h1>
+    <div class="container">
+        <div class="frame">
+            <div class="table">
+                <div class="logo">
+                    JackDash™
+                </div>
+
+                <div class="player">
+                    <p>
+                        Dealer
+                    </p>
+
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                </div>
+
+                <div class="player">
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <div class="card unknown">
+                        <span class="bg">
+                            <img src="{{ asset('img/cardback.svg') }}" />
+                        </span>
+                    </div>
+                    <p>
+                        You
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt">
+            <form action="{{ path('proj_deal') }}" method="post">
+                <div class="form-group">
+                    <label for="betAmount">Bet:</label>
+                    <button class="button"
+                        type="button"
+                        onclick="adjustBet(-10)">
+                        -
+                    </button>
+                    $<input type="number"
+                        id="betAmount"
+                        name="betAmount"
+                        value="{{ betAmount ?? 10 }}"
+                        min="1"
+                        max="{{ playerMoney }}" />
+
+                    <button class="button"
+                        type="button"
+                        onclick="adjustBet(10)">
+                        +
+                    </button>
+                    <button type="submit" class="button primary">
+                        Deal Cards
+                    </button>
+                </div>
+            </form>
+        </div>
+        <p>
+            Your Balance: ${{ playerMoney }}
+        </p>
+    </div>
+
+    <script>
+        const adjustBet = (amount) => { let currentBet =
+        parseInt(document.getElementById("betAmount").value);
+        console.log("Current Bet: ", currentBet); currentBet += amount; if
+        (currentBet < 10 && amount < 0) { currentBet = 10; } if (currentBet >
+        {{ playerMoney }}) { currentBet = {{ playerMoney }}; }
+        document.getElementById("betAmount").value = currentBet; }
+    </script>
+{% endblock %}
