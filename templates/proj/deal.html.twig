@@ -20,38 +20,25 @@
                     JackDash™
                 </div>
 
+                {# Dealer's hand #}
                 <div class="player">
                     <p>
                         Dealer
                     </p>
-
-                    {% if
-                        dealerHand[0] is defined
-                            and dealerHand[0] is not empty %}
-                        <div class="card {{
-                            dealerHand[0].getSuit() == 'H'
-                                or dealerHand[0].getSuit() == 'D'
-                                ? 'red'
-                                : 'black'
-                            }}">
-                            <span class="rank">
-                                {{ attribute(dealerHand[0], 'getRank') }}
-                            </span>
-                            <span class="suit top">
-                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
-                            </span>
-                            <span class="suit bottom">
-                                {{ attribute(dealerHand[0], 'getSuitSymbol') }}
-                            </span>
-                        </div>
-                    {% else %}
-                        {# Handle the case when dealerHand[0] is not an object (e.g., it's a string or null) #}
-                        <div class="card error">
-                            <span class="bg">
-                                <span class="rank">Err</span>
-                            </span>
-                        </div>
-                    {% endif %}
+                    <div class="card {{
+                        dealerHand[0].getSuit() == 'H'
+                            or dealerHand[0].getSuit() == 'D'
+                            ? 'red'
+                            : 'black'
+                        }}">
+                        <span class="rank">{{ dealerHand[0].getRank() }}</span>
+                        <span class="suit top">
+                            {{ dealerHand[0].getSuitSymbol() }}
+                        </span>
+                        <span class="suit bottom">
+                            {{ dealerHand[0].getSuitSymbol() }}
+                        </span>
+                    </div>
                     <div class="card unknown">
                         <span class="bg">
                             <img src="{{ asset('img/cardback.svg') }}" />
@@ -59,57 +46,73 @@
                     </div>
                 </div>
 
-                {# Single Hand Visualization #}
-                <div class="player">
-                    {% for card in playerHand %}
-                        {% if card is defined and card is not empty %}
-                            <div class="card {{
-                                card.getSuit() == 'H' or card.getSuit() == 'D'
-                                    ? 'red'
-                                    : 'black'
-                                }}">
-                                <span class="rank">{{ card.getRank() }}</span>
-                                <span class="suit top">
-                                    {{ card.getSuitSymbol() }}
-                                </span>
-                                <span class="suit bottom">
-                                    {{ card.getSuitSymbol() }}
-                                </span>
-                            </div>
-                        {% else %}
-                            {# Handle the case when card is not an object (e.g., it's a string or null) #}
-                            <div class="card error">
-                                <span class="bg">
-                                    <span class="rank">Err</span>
-                                </span>
-                            </div>
-                        {% endif %}
+                {# Player's hands #}
+                <div class="player-hands">
+                    {% for handData in playerHands %}
+                        <div class="player">
+                            <p>
+                                Player {{ handData.handIndex }}
+                            </p>
+                            {% for card in handData.cards %}
+                                <div class="card {{
+                                    card.getSuit() == 'H'
+                                        or card.getSuit() == 'D'
+                                        ? 'red'
+                                        : 'black'
+                                    }}">
+                                    <span class="rank">
+                                        {{ card.getRank() }}
+                                    </span>
+                                    <span class="suit top">
+                                        {{ card.getSuitSymbol() }}
+                                    </span>
+                                    <span class="suit bottom">
+                                        {{ card.getSuitSymbol() }}
+                                    </span>
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% endfor %}
-                    <div class="data-row">
-                        <p>
-                            You
-                        </p>
-                        <p class="right">
-                            {{ handValue }}
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
 
         <div class="row mt">
-            {% if handValue == 21 %}
-                <form action="{{ path('proj_stand') }}" method="post">
-                    <button class="button success" type="submit">Stand</button>
-                </form>
-            {% else %}
-                <form action="{{ path('proj_hit') }}" method="post">
-                    <button class="button primary" type="submit">Hit</button>
-                </form>
-                <form action="{{ path('proj_stand') }}" method="post">
-                    <button class="button success" type="submit">Stand</button>
-                </form>
-            {% endif %}
+            {# Game actions #}
+            {% for handData in playerHands %}
+                <div class="hand-actions">
+                    {% if handData.handValue == 21 %}
+                        {# Auto-stand or special message for Blackjack #}
+                    {% else %}
+                        <form action="{{
+                            path(
+                                'proj_hit',
+                                {
+                                    handIndex: handData.handIndex
+                                }
+                            )
+                            }}"
+                            method="post">
+                            <button class="button primary" type="submit">
+                                Hit
+                            </button>
+                        </form>
+                        <form action="{{
+                            path(
+                                'proj_stand',
+                                {
+                                    handIndex: handData.handIndex
+                                }
+                            )
+                            }}"
+                            method="post">
+                            <button class="button success" type="submit">
+                                Stand
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
 
             <a class="button danger" href="{{ path('proj') }}">Start Over</a>
         </div>

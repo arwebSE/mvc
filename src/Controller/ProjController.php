@@ -104,21 +104,28 @@ class ProjController extends AbstractController
         $betAmount = $request->request->get("betAmount");
         $session->set("bj_bet", $betAmount);
 
-        // get session data
-        $playerHand = $session->get("bj_player_hand");
-        if (!$playerHand instanceof CardHand) {
-            throw new Exception("Player hand not found in session.");
-        }
+        // Get player hands and dealer hand from the session
+        $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
-        if (!$dealerHand instanceof CardHand) {
-            throw new Exception("Dealer hand not found in session.");
+
+        if (!is_array($playerHands) || count($playerHands) == 0) {
+            throw new Exception("Player hands not found in session.");
         }
 
-        // Render the bj deal template with player's and dealer's hands
+        // Prepare the data for each player hand
+        $playerHandsData = [];
+        foreach ($playerHands as $index => $hand) {
+            $playerHandsData[] = [
+                "handIndex" => $index + 1,
+                "cards" => $hand->getCards(),
+                "handValue" => $this->calculateHandValue($hand),
+            ];
+        }
+
+        // Prepare the overall data for the view
         $data = [
-            "playerHand" => $playerHand->getCards(),
+            "playerHands" => $playerHandsData,
             "dealerHand" => $dealerHand->getCards(),
-            "handValue" => $this->calculateHandValue($playerHand),
             "playerMoney" => $playerMoney,
             "betAmount" => $betAmount,
         ];

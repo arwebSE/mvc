@@ -469,34 +469,47 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     box-shadow: 0 0 100px inset rgba(0, 0, 0, 0.406);
     position: relative;
-}
+    justify-content: space-between;
 
-.table .logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2em;
-    background: -webkit-linear-gradient(#d4df8c, #c9953b);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: "Playball", cursive;
-}
+    .dealer,
+    .player-hands {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 
-.table p {
-    color: white;
-    font-size: 0.7em;
-    font-weight: bold;
-    margin: 0;
-}
+    .player-hands {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px; // Adjust gap between player hands
+    }
 
-.player {
-    margin: 70px auto;
+    .player {
+        margin: 5px 10px;
+    }
+
+    .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 2em;
+        background: -webkit-linear-gradient(#d4df8c, #c9953b);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: "Playball", cursive;
+    }
+
+    p {
+        color: white;
+        font-size: 0.7em;
+        font-weight: bold;
+        margin: 0;
+    }
 }
 
 .card {
