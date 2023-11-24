@@ -27,9 +27,13 @@ yarn-error.log
 # mac
 .DS_Store
 
-tools/phpstan/vendor/
-tools/phpmd/vendor/
-tools/php-cs-fixer/vendor/
-
 *.cache
 .phpdoc/
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
