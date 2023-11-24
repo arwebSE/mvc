@@ -122,17 +122,18 @@ class JsonController extends AbstractController
     /**
      * Draw cards from the deck.
      *
-     * @param int               $number  The number of cards to draw.
-     * @param SessionInterface  $session The session interface.
+     * @param int $number The number of cards to draw.
+     * @param SessionInterface $session The session interface.
      *
      * @return array{
      *     "message"?: string,
-     *     "cards": array{
+     *     "cards": array<array{
      *         "rank": string,
      *         "suit": string
-     *     }[],
+     *     }>,
      *     "cardsLeft": int
      * }
+     *
      */
     private function drawCardsFromDeck(
         int $number,
