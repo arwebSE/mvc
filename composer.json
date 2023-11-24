@@ -115,7 +115,9 @@
         "phpdoc": "tools/phpdoc/phpdoc",
         "phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit",
         "phpunit-run": "vendor/bin/phpunit",
-        "phpmetrics": "vendor/bin/phpmetrics --report-html=public/phpmetrics src"
+        "phpmetrics": "vendor/bin/phpmetrics --report-html=public/phpmetrics src",
+        "metrics": "vendor/bin/phpmetrics --report-html=public/phpmetrics src",
+        "runall": "composer phpdoc && composer phpunit && composer phpmetrics && composer csfix && composer lint"
     },
     "conflict": {
         "symfony/symfony": "*"
