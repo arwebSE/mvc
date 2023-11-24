@@ -125,15 +125,10 @@ class JsonController extends AbstractController
      * @param int $number The number of cards to draw.
      * @param SessionInterface $session The session interface.
      *
-     * @return array{
-     *     "message"?: string,
-     *     "cards": array<array{
-     *         "rank": string,
-     *         "suit": string
-     *     }>,
-     *     "cardsLeft": int
-     * }
-     *
+     * @return array Returns an associative array containing:
+     *               - "message" (string, optional): A message if no more cards are left.
+     *               - "cards" (array): An array of arrays, each representing a card with "rank" and "suit".
+     *               - "cardsLeft" (int): The number of cards left in the deck.
      */
     private function drawCardsFromDeck(
         int $number,

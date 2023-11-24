@@ -49,7 +49,7 @@
 <div class="page">
     <div class="content content-first">
         <div class="report-details">
-            Created at 2023-11-24 12:02:51        , with PHPMetrics v2.8.2 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2023-11-24 19:34:10        , with PHPMetrics v2.8.2 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
         
@@ -247,45 +247,12 @@
 
     var relations = [
     {
-        "name": "\\App\\Card\\Card",
+        "name": "\\App\\Repository\\BookRepository",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\App\\Card\\CardHand",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Card\\DeckOfCards",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controller\\BookController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\Symfony\\Component\\HttpFoundation\\Request",
-            "\\Doctrine\\Persistence\\ManagerRegistry",
-            "\\App\\Entity\\Book",
-            "\\App\\Repository\\BookRepository",
-            "\\Doctrine\\ORM\\EntityManagerInterface"
-        ]
-    },
-    {
-        "name": "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Symfony\\Component\\HttpFoundation\\Response",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Symfony\\Component\\HttpFoundation\\Request",
+        "name": "\\Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository",
         "size": 3000,
         "relations": []
     },
@@ -293,130 +260,6 @@
         "name": "\\Doctrine\\Persistence\\ManagerRegistry",
         "size": 3000,
         "relations": []
-    },
-    {
-        "name": "\\App\\Entity\\Book",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Repository\\BookRepository",
-        "size": 3000,
-        "relations": [
-            "\\Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository",
-            "\\Doctrine\\Persistence\\ManagerRegistry"
-        ]
-    },
-    {
-        "name": "\\Doctrine\\ORM\\EntityManagerInterface",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controller\\CardGameController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
-            "\\App\\Card\\DeckOfCards",
-            "\\Symfony\\Component\\HttpFoundation\\Request",
-            "\\App\\Card\\CardHand"
-        ]
-    },
-    {
-        "name": "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controller\\DiceGameController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\App\\Dice\\DiceGraphic",
-            "\\Exception",
-            "\\App\\Dice\\DiceHand",
-            "\\App\\Dice\\Dice",
-            "\\Symfony\\Component\\HttpFoundation\\Request",
-            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface"
-        ]
-    },
-    {
-        "name": "\\App\\Dice\\DiceGraphic",
-        "size": 3000,
-        "relations": [
-            "\\App\\Dice\\Dice"
-        ]
-    },
-    {
-        "name": "\\Exception",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Dice\\DiceHand",
-        "size": 3000,
-        "relations": [
-            "\\App\\Dice\\Dice"
-        ]
-    },
-    {
-        "name": "\\App\\Dice\\Dice",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controller\\Game21Controller",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
-            "\\App\\Card\\DeckOfCards",
-            "\\App\\Card\\CardHand",
-            "\\Symfony\\Component\\HttpFoundation\\Request",
-            "\\Exception"
-        ]
-    },
-    {
-        "name": "\\App\\Controller\\JsonController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\JsonResponse",
-            "\\App\\Card\\DeckOfCards",
-            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
-            "\\App\\Card\\CardHand",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\App\\Repository\\BookRepository",
-            "\\Doctrine\\Persistence\\ManagerRegistry"
-        ]
-    },
-    {
-        "name": "\\Symfony\\Component\\HttpFoundation\\JsonResponse",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controller\\LibraryController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response",
-            "\\App\\Repository\\BookRepository",
-            "\\Doctrine\\ORM\\EntityManagerInterface",
-            "\\App\\Entity\\Book"
-        ]
-    },
-    {
-        "name": "\\App\\Controller\\MainController",
-        "size": 3000,
-        "relations": [
-            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
-            "\\Symfony\\Component\\HttpFoundation\\Response"
-        ]
     },
     {
         "name": "\\App\\Form\\BookType",
@@ -443,6 +286,161 @@
         "relations": []
     },
     {
+        "name": "\\App\\Card\\Card",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Card\\DeckOfCards",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Card\\CardHand",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Entity\\Book",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Dice\\DiceHand",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Dice\\Dice",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Dice\\DiceGraphic",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controller\\CardGameController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
+            "\\App\\Card\\DeckOfCards",
+            "\\Symfony\\Component\\HttpFoundation\\Request",
+            "\\App\\Card\\CardHand"
+        ]
+    },
+    {
+        "name": "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Symfony\\Component\\HttpFoundation\\Response",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Symfony\\Component\\HttpFoundation\\Request",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controller\\JsonController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\JsonResponse",
+            "\\App\\Card\\DeckOfCards",
+            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
+            "\\App\\Card\\CardHand",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\App\\Repository\\BookRepository",
+            "\\Doctrine\\Persistence\\ManagerRegistry"
+        ]
+    },
+    {
+        "name": "\\Symfony\\Component\\HttpFoundation\\JsonResponse",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controller\\BookController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\Symfony\\Component\\HttpFoundation\\Request",
+            "\\Doctrine\\Persistence\\ManagerRegistry",
+            "\\App\\Entity\\Book",
+            "\\App\\Repository\\BookRepository",
+            "\\Doctrine\\ORM\\EntityManagerInterface"
+        ]
+    },
+    {
+        "name": "\\Doctrine\\ORM\\EntityManagerInterface",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controller\\Game21Controller",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface",
+            "\\App\\Card\\DeckOfCards",
+            "\\App\\Card\\CardHand",
+            "\\Symfony\\Component\\HttpFoundation\\Request",
+            "\\Exception"
+        ]
+    },
+    {
+        "name": "\\Exception",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controller\\DiceGameController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\App\\Dice\\DiceGraphic",
+            "\\Exception",
+            "\\App\\Dice\\DiceHand",
+            "\\App\\Dice\\Dice",
+            "\\Symfony\\Component\\HttpFoundation\\Request",
+            "\\Symfony\\Component\\HttpFoundation\\Session\\SessionInterface"
+        ]
+    },
+    {
+        "name": "\\App\\Controller\\LibraryController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response",
+            "\\App\\Repository\\BookRepository",
+            "\\Doctrine\\ORM\\EntityManagerInterface",
+            "\\App\\Entity\\Book"
+        ]
+    },
+    {
+        "name": "\\App\\Controller\\MainController",
+        "size": 3000,
+        "relations": [
+            "\\Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+            "\\Symfony\\Component\\HttpFoundation\\Response"
+        ]
+    },
+    {
         "name": "\\App\\Kernel",
         "size": 3000,
         "relations": [
@@ -451,11 +449,6 @@
     },
     {
         "name": "\\Symfony\\Component\\HttpKernel\\Kernel",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository",
         "size": 3000,
         "relations": []
     }

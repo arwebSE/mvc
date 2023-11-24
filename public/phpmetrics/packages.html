@@ -49,7 +49,7 @@
 <div class="page">
     <div class="content content-first">
         <div class="report-details">
-            Created at 2023-11-24 12:02:52        , with PHPMetrics v2.8.2 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2023-11-24 19:34:10        , with PHPMetrics v2.8.2 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
         
@@ -75,47 +75,14 @@
                     </tr>
                     </thead>
                                             <tr>
-                            <td><span class="path">App\Card</span></td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td><span class="path">App\Repository</span></td>
                             <td>1</td>
                             <td>0</td>
-                            <td>0</td>
-                            <td>3</td>
-                            <td>1</td>
-                        </tr>
-                                            <tr>
-                            <td><span class="path">App\Controller</span></td>
-                            <td>7</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>15</td>
-                            <td>10</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                                            <tr>
-                            <td><span class="path">App\Dice</span></td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                                            <tr>
-                            <td><span class="path">App\Entity</span></td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td>0.4</td>
+                            <td>0.6</td>
                             <td>2</td>
+                            <td>2</td>
+                            <td>3</td>
                             <td>1</td>
                         </tr>
                                             <tr>
@@ -130,6 +97,50 @@
                             <td>0</td>
                         </tr>
                                             <tr>
+                            <td><span class="path">App\Card</span></td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>3</td>
+                            <td>1</td>
+                        </tr>
+                                            <tr>
+                            <td><span class="path">App\Entity</span></td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>1</td>
+                        </tr>
+                                            <tr>
+                            <td><span class="path">App\Dice</span></td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                                            <tr>
+                            <td><span class="path">App\Controller</span></td>
+                            <td>7</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>15</td>
+                            <td>10</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                                            <tr>
                             <td><span class="path">App</span></td>
                             <td>1</td>
                             <td>0</td>
@@ -139,17 +150,6 @@
                             <td>1</td>
                             <td>0</td>
                             <td>0</td>
-                        </tr>
-                                            <tr>
-                            <td><span class="path">App\Repository</span></td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0.4</td>
-                            <td>0.6</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>1</td>
                         </tr>
                                     </table>
             </div>
@@ -341,23 +341,23 @@
 
     var spots = [
     {
-        "name": "App\\Card",
+        "name": "App\\Repository",
         "abstraction": 0,
-        "instability": 0,
-        "distance": 0.7071067811865475,
-        "normalizedDistance": 1,
-        "classCount": 3
+        "instability": 0.4,
+        "distance": 0.42426406871192845,
+        "normalizedDistance": 0.6,
+        "classCount": 1
     },
     {
-        "name": "App\\Controller",
+        "name": "App\\Form",
         "abstraction": 0,
         "instability": 1,
         "distance": 0,
         "normalizedDistance": 0,
-        "classCount": 7
+        "classCount": 1
     },
     {
-        "name": "App\\Dice",
+        "name": "App\\Card",
         "abstraction": 0,
         "instability": 0,
         "distance": 0.7071067811865475,
@@ -373,12 +373,20 @@
         "classCount": 1
     },
     {
-        "name": "App\\Form",
+        "name": "App\\Dice",
+        "abstraction": 0,
+        "instability": 0,
+        "distance": 0.7071067811865475,
+        "normalizedDistance": 1,
+        "classCount": 3
+    },
+    {
+        "name": "App\\Controller",
         "abstraction": 0,
         "instability": 1,
         "distance": 0,
         "normalizedDistance": 0,
-        "classCount": 1
+        "classCount": 7
     },
     {
         "name": "App",
@@ -386,14 +394,6 @@
         "instability": 1,
         "distance": 0,
         "normalizedDistance": 0,
-        "classCount": 1
-    },
-    {
-        "name": "App\\Repository",
-        "abstraction": 0,
-        "instability": 0.4,
-        "distance": 0.42426406871192845,
-        "normalizedDistance": 0.6,
         "classCount": 1
     }
 ];
