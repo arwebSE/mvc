@@ -1,5 +1,11 @@
 # MVC Symfony Project
 
+[![Build Status](https://scrutinizer-ci.com/g/arwebSE/mvc/badges/build.png?b=main)](https://scrutinizer-ci.com/g/arwebSE/mvc/build-status/main)
+
+[![Code Coverage](https://scrutinizer-ci.com/g/arwebSE/mvc/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/arwebSE/mvc/?branch=main)
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arwebSE/mvc/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/arwebSE/mvc/?branch=main)
+
 ## Description
 
 This project is developed as part of an MVC (Model-View-Controller) course. It is built using the Symfony PHP framework and includes various features and functionalities typical of modern web applications.
