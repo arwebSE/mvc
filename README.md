@@ -14,7 +14,7 @@ This project is developed as part of an MVC (Model-View-Controller) course. It i
 ## Requirements
 
 -   PHP >= 8.1
--   Extensions: php-xdebug
+-   Extensions: xdebug, pdo_sqlite, sqlite3
 -   Node.js & NPM
 -   Composer for dependency management
 
