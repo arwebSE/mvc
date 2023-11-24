@@ -49,4 +49,10 @@ class MainController extends AbstractController
     {
         return $this->render("games.html.twig");
     }
+
+    #[Route("/metrics", name: "metrics")]
+    public function metrics(): Response
+    {
+        return $this->render("metrics.html.twig");
+    }
 }

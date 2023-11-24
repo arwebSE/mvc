@@ -114,7 +114,8 @@
         ],
         "phpdoc": "tools/phpdoc/phpdoc",
         "phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit",
-        "phpunit-run": "vendor/bin/phpunit"
+        "phpunit-run": "vendor/bin/phpunit",
+        "phpmetrics": "vendor/bin/phpmetrics --report-html=public/phpmetrics src"
     },
     "conflict": {
         "symfony/symfony": "*"
