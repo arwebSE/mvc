@@ -78,45 +78,32 @@
         </div>
 
         <div class="row mt">
-            {# Game actions #}
-            {% for handData in playerHands %}
-                <div class="hand-actions">
-                    {% if handData.handValue == 21 %}
-                        {# Auto-stand or special message for Blackjack #}
-                    {% else %}
-                        <form action="{{
-                            path(
-                                'proj_hit',
-                                {
-                                    handIndex: handData.handIndex
-                                }
-                            )
-                            }}"
-                            method="post">
-                            <button class="button primary" type="submit">
-                                Hit
-                            </button>
-                        </form>
-                        <form action="{{
-                            path(
-                                'proj_stand',
-                                {
-                                    handIndex: handData.handIndex
-                                }
-                            )
-                            }}"
-                            method="post">
-                            <button class="button success" type="submit">
-                                Stand
-                            </button>
-                        </form>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <form action="{{ path('proj_action') }}" method="post">
+                {% for handData in playerHands %}
+                    <div class="hand-actions">
+                        <fieldset>
+                            <legend>
+                                Player {{ handData.handIndex }}
+                            </legend>
+                            <label>
+                                <input type="radio"
+                                    name="action{{ handData.handIndex }}"
+                                    value="hit"
+                                    required />Hit
+                            </label>
+                            <label>
+                                <input type="radio"
+                                    name="action{{ handData.handIndex }}"
+                                    value="stand" />Stand
+                            </label>
+                        </fieldset>
+                    </div>
+                {% endfor %}
 
+                <button class="button primary" type="submit">Proceed</button>
+            </form>
             <a class="button danger" href="{{ path('proj') }}">Start Over</a>
         </div>
-
         <div class="bet-container mt">
             <h5>
                 Current Bet: $<span id="displayedBet">{{ app.session.get(

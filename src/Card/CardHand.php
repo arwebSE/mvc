@@ -9,6 +9,8 @@ class CardHand
      */
     private array $cards = [];
 
+    private $status = "active";
+
     public function __construct()
     {
         $this->cards = [];
@@ -70,5 +72,15 @@ class CardHand
             $cardStrings[] = $card->getAsString();
         }
         return $cardStrings;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 }

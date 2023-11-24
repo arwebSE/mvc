@@ -94,25 +94,27 @@ class ProjController extends AbstractController
     #[Route("/proj/deal", name: "proj_deal")]
     public function play(Request $request, SessionInterface $session): Response
     {
-        // Get players money
+        // Get player's money
         $playerMoney = $session->get("bj_money");
 
+        // Redirect to reset if the player has no money left
         if ($playerMoney <= 0) {
             return $this->redirectToRoute("proj_reset");
         }
 
-        $betAmount = $request->request->get("betAmount");
-        $session->set("bj_bet", $betAmount);
+        // Retrieve the current bet amount from the session or default to 10
+        $betAmount = $session->get("bj_bet", 10);
 
-        // Get player hands and dealer hand from the session
+        // Retrieve player and dealer hands from the session
         $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
 
+        // Check if player hands are available in the session
         if (!is_array($playerHands) || count($playerHands) == 0) {
             throw new Exception("Player hands not found in session.");
         }
 
-        // Prepare the data for each player hand
+        // Prepare data for each player hand
         $playerHandsData = [];
         foreach ($playerHands as $index => $hand) {
             $playerHandsData[] = [
@@ -122,7 +124,7 @@ class ProjController extends AbstractController
             ];
         }
 
-        // Prepare the overall data for the view
+        // Prepare the overall data for rendering the view
         $data = [
             "playerHands" => $playerHandsData,
             "dealerHand" => $dealerHand->getCards(),
@@ -270,6 +272,57 @@ class ProjController extends AbstractController
         return $this->render("proj/result.html.twig", $data);
     }
 
+    #[Route("/proj/action", name: "proj_action")]
+    public function processAction(
+        Request $request,
+        SessionInterface $session
+    ): Response {
+        $playerHands = $session->get("bj_player_hands");
+        $deck = $session->get("bj_deck");
+        $allHandsCompleted = true;
+
+        foreach ($playerHands as $index => $hand) {
+            $action = $request->request->get("action" . ($index + 1));
+
+            if ($action === "hit") {
+                $this->drawAndAddCard($deck, $hand);
+                if ($this->calculateHandValue($hand) > 21) {
+                    $hand->setStatus("bust"); // bust the hand
+                } else {
+                    $allHandsCompleted = false;
+                }
+            } elseif ($action === "stand") {
+                $hand->setStatus("stand");
+            } else {
+                $allHandsCompleted = false;
+            }
+        }
+
+        $session->set("bj_deck", $deck);
+        $session->set("bj_player_hands", $playerHands);
+
+        if ($allHandsCompleted) {
+            // all hands are completed, proceed to the results page
+            return $this->redirectToRoute("proj_result");
+        }
+
+        return $this->redirectToRoute("proj_deal");
+    }
+
+    #[Route("/proj/results", name: "proj_result")]
+    public function showResults(SessionInterface $session): Response
+    {
+        // calculate and display the results of the round
+
+        $data = [
+            "playerHand" => $playerHand->getCards(),
+            "dealerHand" => $dealerHand->getCards(),
+            "result" => "Bust! You lose.",
+            "playerMoney" => $playerMoney,
+        ];
+        return $this->render("proj/result.html.twig", $data);
+    }
+
     /**
      * Calculates the value of a card hand considering Aces can be 1 or 11 points.
      *
@@ -312,6 +365,11 @@ class ProjController extends AbstractController
      */
     private function drawAndAddCard(DeckOfCards $deck, CardHand $hand): void
     {
+        if ($hand->getStatus() !== "active") {
+            // Do not draw a card if hand inactive
+            return;
+        }
+
         $card = $deck->drawCard();
         if ($card !== null) {
             $hand->addCard($card);
