@@ -446,12 +446,12 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 70vh; /* Hide any overflowing content */
+    height: 80vh; /* Hide any overflowing content */
 }
 
 .frame {
-    width: 600px;
-    height: 350px;
+    width: 1000px;
+    height: 600px;
     border: 10px solid #8b5a2b;
     border-radius: 114px;
     display: flex;
@@ -502,6 +502,10 @@ footer {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-family: "Playball", cursive;
+        span {
+            display: flex;
+            justify-content: center;
+        }
     }
 
     p {

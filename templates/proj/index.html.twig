@@ -77,18 +77,32 @@
                         value="{{ betAmount ?? 10 }}"
                         min="1"
                         max="{{ playerMoney }}" />
-
                     <button class="button"
                         type="button"
                         onclick="adjustBet(10)">
                         +
                     </button>
+
+                    <label for="numHands">Number of Hands:</label>
+                    <select name="numHands" id="numHands">
+                        <option value="1">
+                            1 Hand
+                        </option>
+                        <option value="2">
+                            2 Hands
+                        </option>
+                        <option value="3">
+                            3 Hands
+                        </option>
+                    </select>
+
                     <button type="submit" class="button primary">
                         Deal Cards
                     </button>
                 </div>
             </form>
         </div>
+
         <p>
             Your Balance: ${{ playerMoney }}
         </p>

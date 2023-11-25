@@ -39,31 +39,37 @@
                     {% endfor %}
                 </div>
 
-                {% for handResult in playerHandsResults %}
-                    <div class="player">
-                        <p>
-                            Player Hand {{ handResult.handIndex }}
-                        </p>
-                        {% for card in handResult.cards %}
-                            <div class="card {{
-                                card.getSuit() == 'H' or card.getSuit() == 'D'
-                                    ? 'red'
-                                    : 'black'
-                                }}">
-                                <span class="rank">{{ card.getRank() }}</span>
-                                <span class="suit top">
-                                    {{ card.getSuitSymbol() }}
-                                </span>
-                                <span class="suit bottom">
-                                    {{ card.getSuitSymbol() }}
-                                </span>
-                            </div>
-                        {% endfor %}
-                        <p>
-                            Result: {{ handResult.result }}
-                        </p>
-                    </div>
-                {% endfor %}
+                {# Player's hands #}
+                <div class="player-hands">
+                    {% for handResult in playerHandsResults %}
+                        <div class="player">
+                            <p>
+                                Player Hand {{ handResult.handIndex }}
+                            </p>
+                            {% for card in handResult.cards %}
+                                <div class="card {{
+                                    card.getSuit() == 'H'
+                                        or card.getSuit() == 'D'
+                                        ? 'red'
+                                        : 'black'
+                                    }}">
+                                    <span class="rank">
+                                        {{ card.getRank() }}
+                                    </span>
+                                    <span class="suit top">
+                                        {{ card.getSuitSymbol() }}
+                                    </span>
+                                    <span class="suit bottom">
+                                        {{ card.getSuitSymbol() }}
+                                    </span>
+                                </div>
+                            {% endfor %}
+                            <p>
+                                Result: {{ handResult.result }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
 

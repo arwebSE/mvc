@@ -31,7 +31,7 @@ class ProjController extends AbstractController
     }
 
     #[Route("/proj", name: "proj")]
-    public function proj(SessionInterface $session): Response
+    public function proj(SessionInterface $session, Request $request): Response
     {
         // Initialize players money
         $playerMoney = $session->get("bj_money");
@@ -42,7 +42,8 @@ class ProjController extends AbstractController
             return $this->redirectToRoute("proj_reset");
         }
 
-        $numberOfHands = 3; // Number of hands to play
+        $numberOfHands = $request->request->get("numHands", 1);
+        $numberOfHands = max(1, min(3, (int) $numberOfHands));
 
         $playerHands = [];
         for ($i = 0; $i < $numberOfHands; $i++) {
