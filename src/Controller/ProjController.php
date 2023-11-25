@@ -312,14 +312,50 @@ class ProjController extends AbstractController
     #[Route("/proj/results", name: "proj_result")]
     public function showResults(SessionInterface $session): Response
     {
-        // calculate and display the results of the round
+        $playerHands = $session->get("bj_player_hands");
+        $dealerHand = $session->get("bj_dealer_hand");
+        $playerMoney = $session->get("bj_money");
+        $betAmount = $session->get("bj_bet", 10);
+
+        $dealerHandValue = $this->calculateHandValue($dealerHand);
+        $isDealerBust = $dealerHandValue > 21;
+
+        $results = [];
+        foreach ($playerHands as $index => $hand) {
+            $handValue = $this->calculateHandValue($hand);
+            $status = $hand->getStatus();
+
+            if ($status === "bust") {
+                $result = "Bust";
+                $playerMoney -= $betAmount;
+            } elseif ($isDealerBust || $handValue > $dealerHandValue) {
+                $result = "Win";
+                $playerMoney += $betAmount;
+            } elseif ($handValue === $dealerHandValue) {
+                $result = "Tie";
+            } else {
+                $result = "Lose";
+                $playerMoney -= $betAmount;
+            }
+
+            $results[] = [
+                "handIndex" => $index + 1,
+                "cards" => $hand->getCards(),
+                "handValue" => $handValue,
+                "result" => $result,
+            ];
+        }
+
+        $session->set("bj_money", $playerMoney);
 
         $data = [
-            "playerHand" => $playerHand->getCards(),
+            "playerHandsResults" => $results,
             "dealerHand" => $dealerHand->getCards(),
-            "result" => "Bust! You lose.",
+            "dealerHandValue" => $dealerHandValue,
+            "isDealerBust" => $isDealerBust,
             "playerMoney" => $playerMoney,
         ];
+
         return $this->render("proj/result.html.twig", $data);
     }
 
