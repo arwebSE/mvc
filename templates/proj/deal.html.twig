@@ -21,30 +21,26 @@
                     <span>${{ app.session.get('bj_bet') ?? 'x' }}</span>
                 </div>
 
-                {# Dealer's hand #}
+                {# Dealer's hand display #}
                 <div class="player">
                     <p>
                         Dealer
                     </p>
-                    <div class="card {{
-                        dealerHand[0].getSuit() == 'H'
-                            or dealerHand[0].getSuit() == 'D'
-                            ? 'red'
-                            : 'black'
-                        }}">
-                        <span class="rank">{{ dealerHand[0].getRank() }}</span>
-                        <span class="suit top">
-                            {{ dealerHand[0].getSuitSymbol() }}
-                        </span>
-                        <span class="suit bottom">
-                            {{ dealerHand[0].getSuitSymbol() }}
-                        </span>
-                    </div>
-                    <div class="card unknown">
-                        <span class="bg">
-                            <img src="{{ asset('img/cardback.svg') }}" />
-                        </span>
-                    </div>
+                    {% for card in dealerHand.cards %}
+                        <div class="card {{
+                            card.getSuit() == 'H' or card.getSuit() == 'D'
+                                ? 'red'
+                                : 'black'
+                            }}">
+                            <span class="rank">{{ card.getRank() }}</span>
+                            <span class="suit top">
+                                {{ card.getSuitSymbol() }}
+                            </span>
+                            <span class="suit bottom">
+                                {{ card.getSuitSymbol() }}
+                            </span>
+                        </div>
+                    {% endfor %}
                 </div>
 
                 {# Player's hands #}

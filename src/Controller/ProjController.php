@@ -15,105 +15,84 @@ use Exception;
 
 class ProjController extends AbstractController
 {
+    // About Page
     #[Route("/proj/about", name: "proj_about")]
     public function projAbout(): Response
     {
         return $this->render("/proj/about.html.twig");
     }
 
+    // Reset Game
     #[Route("/proj/reset", name: "proj_reset")]
     public function projReset(SessionInterface $session): Response
     {
-        // Clear the session
         $session->clear();
         $session->invalidate();
-        return $this->render("/proj/reset.html.twig");
+        return $this->redirectToRoute("proj");
     }
 
+    // Main Game Route
     #[Route("/proj", name: "proj")]
     public function proj(SessionInterface $session, Request $request): Response
     {
-        // Initialize players money
-        $playerMoney = $session->get("bj_money");
-        if ($playerMoney === null) {
-            $playerMoney = 100;
-            $session->set("bj_money", $playerMoney);
-        } elseif ($playerMoney <= 0) {
-            return $this->redirectToRoute("proj_reset");
-        }
-
-        $numberOfHands = $request->request->get("numHands", 1);
-        $numberOfHands = max(1, min(3, (int) $numberOfHands));
-
-        $playerHands = [];
-        for ($i = 0; $i < $numberOfHands; $i++) {
-            $hand = new CardHand();
-            $playerHands[] = $hand;
-        }
-
-        // Initialize a new deck and shuffle it
-        $deck = new DeckOfCards();
-        $deck->shuffle();
-
-        // Initialize the dealer's hand and deal two cards
-        $dealerHand = new CardHand();
-        $this->drawAndAddCard($deck, $dealerHand);
-        $this->drawAndAddCard($deck, $dealerHand);
-
-        // Deal two cards to each player hand
-        foreach ($playerHands as $hand) {
-            $this->drawAndAddCard($deck, $hand);
-            $this->drawAndAddCard($deck, $hand);
-        }
-
-        // Save the new deck and hands to the session
-        $session->set("bj_deck", $deck);
-        $session->set("bj_player_hands", $playerHands);
-        $session->set("bj_dealer_hand", $dealerHand);
-
-        // Prepare the data for each player hand
-        $playerHandsData = [];
-        foreach ($playerHands as $index => $hand) {
-            $playerHandsData[] = [
-                "handIndex" => $index + 1,
-                "cards" => $hand->getCards(),
-                "handValue" => $this->calculateHandValue($hand),
-            ];
-        }
-
-        // Prepare the overall data for the view
-        $data = [
-            "playerHands" => $playerHandsData,
-            "dealerHand" => $dealerHand->getCards(),
-            "playerMoney" => $playerMoney,
-            "betAmount" => $session->get("bj_bet", 10),
-        ];
-
-        return $this->render("proj/index.html.twig", $data);
-    }
-
-    #[Route("/proj/deal", name: "proj_deal")]
-    public function play(Request $request, SessionInterface $session): Response
-    {
-        // Get player's money
-        $playerMoney = $session->get("bj_money");
-
-        // Redirect to reset if the player has no money left
+        $playerMoney = $session->get("bj_money", 100);
         if ($playerMoney <= 0) {
             return $this->redirectToRoute("proj_reset");
         }
 
-        // Retrieve the current bet amount from the session or default to 10
-        $betAmount = $session->get("bj_bet", 10);
+        $this->initializeGame($session, $request);
+        return $this->renderGameView($session);
+    }
 
-        // Retrieve player and dealer hands from the session
+    // Handle Game Actions
+    #[Route("/proj/action", name: "proj_action")]
+    public function processAction(
+        Request $request,
+        SessionInterface $session
+    ): Response {
+        $allHandsCompleted = $this->handlePlayerActions($request, $session);
+
+        if ($allHandsCompleted) {
+            // All hands are completed, proceed to the results page
+            return $this->redirectToRoute("proj_results");
+        }
+
+        return $this->redirectToRoute("proj_deal");
+    }
+
+    // Show Results
+    #[Route("/proj/results", name: "proj_results")]
+    public function showResults(SessionInterface $session): Response
+    {
+        return $this->renderResultsView($session);
+    }
+
+    // Helper Functions
+    private function initializeGame(
+        SessionInterface $session,
+        Request $request
+    ): void {
+        $deck = new DeckOfCards();
+        $deck->shuffle();
+
+        $numberOfHands = $request->request->get("numHands", 1);
+        $numberOfHands = max(1, min(3, (int) $numberOfHands));
+
+        $playerHands = $this->dealPlayerHands($numberOfHands, $deck);
+        $dealerHand = $this->dealDealerHand($deck);
+
+        $session->set("bj_deck", $deck);
+        $session->set("bj_player_hands", $playerHands);
+        $session->set("bj_dealer_hand", $dealerHand);
+        $session->set("bj_bet", $request->request->get("betAmount", 10));
+    }
+
+    private function renderGameView(SessionInterface $session): Response
+    {
         $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
-
-        // Check if player hands are available in the session
-        if (!is_array($playerHands) || count($playerHands) == 0) {
-            throw new Exception("Player hands not found in session.");
-        }
+        $playerMoney = $session->get("bj_money", 100);
+        $betAmount = $session->get("bj_bet", 10);
 
         // Prepare data for each player hand
         $playerHandsData = [];
@@ -122,13 +101,21 @@ class ProjController extends AbstractController
                 "handIndex" => $index + 1,
                 "cards" => $hand->getCards(),
                 "handValue" => $this->calculateHandValue($hand),
+                "status" => $hand->getStatus(),
             ];
         }
 
-        // Prepare the overall data for rendering the view
+        // Prepare dealer hand data
+        $dealerHandData = [
+            "cards" => $dealerHand->getCards(),
+            "handValue" => $this->calculateHandValue($dealerHand),
+            "isDealerHandHidden" => true, // Initially, dealer's first card is hidden
+        ];
+
+        // Prepare overall data for the view
         $data = [
             "playerHands" => $playerHandsData,
-            "dealerHand" => $dealerHand->getCards(),
+            "dealerHand" => $dealerHandData,
             "playerMoney" => $playerMoney,
             "betAmount" => $betAmount,
         ];
@@ -136,148 +123,10 @@ class ProjController extends AbstractController
         return $this->render("proj/deal.html.twig", $data);
     }
 
-    #[Route("/proj/hit", name: "proj_hit")]
-    public function hit(SessionInterface $session): Response
-    {
-        // Draw a new card from the deck and add it to the player's hand
-        // get session data
-        $deck = $session->get("bj_deck");
-        if (!$deck instanceof DeckOfCards) {
-            throw new Exception("Card deck not found in session.");
-        }
-        $playerHand = $session->get("bj_player_hand");
-        if (!$playerHand instanceof CardHand) {
-            throw new Exception("Player hand not found in session.");
-        }
-        $dealerHand = $session->get("bj_dealer_hand");
-        if (!$dealerHand instanceof CardHand) {
-            throw new Exception("Dealer hand not found in session.");
-        }
-
-        // Draw a new card from the deck and add it to the player's hand
-        $drawnCard = $deck->drawCard();
-        if ($drawnCard !== null) {
-            $playerHand->addCard($drawnCard);
-        }
-
-        // Save the updated deck and player's hand to the session
-        $session->set("bj_deck", $deck);
-        $session->set("bj_player_hand", $playerHand);
-
-        // Get the player's money from the session
-        $playerMoney = $session->get("bj_money");
-        $betAmount = $session->get("bj_bet");
-
-        // Calculate the hand value
-        $handValue = $this->calculateHandValue($playerHand);
-
-        // If player busts
-        if ($handValue > 21) {
-            // Player busts, render the result template with a message
-            $playerMoney = $session->get("bj_money");
-            $playerMoney -= $betAmount;
-            $session->set("bj_money", $playerMoney);
-            $data = [
-                "playerHand" => $playerHand->getCards(),
-                "dealerHand" => $dealerHand->getCards(),
-                "result" => "Bust! You lose.",
-                "playerMoney" => $playerMoney,
-            ];
-            if ($playerMoney <= 0) {
-                return $this->redirectToRoute("proj_reset");
-            }
-            return $this->render("proj/result.html.twig", $data);
-        }
-
-        // Else, the game goes on
-        $data = [
-            "playerHand" => $playerHand->getCards(),
-            "dealerHand" => $dealerHand->getCards(),
-            "handValue" => $handValue,
-            "playerMoney" => $playerMoney,
-        ];
-        return $this->render("proj/deal.html.twig", $data);
-    }
-
-    #[Route("/proj/stand", name: "proj_stand")]
-    public function stand(SessionInterface $session): Response
-    {
-        // get session data
-        $deck = $session->get("bj_deck");
-        if (!$deck instanceof DeckOfCards) {
-            throw new Exception("Card deck not found in session.");
-        }
-        $dealerHand = $session->get("bj_dealer_hand");
-        if (!$dealerHand instanceof CardHand) {
-            throw new Exception("Dealer hand not found in session.");
-        }
-
-        // Get the player's money from the session
-        $playerMoney = $session->get("bj_money");
-        $betAmount = $session->get("bj_bet");
-
-        // Dealer draws cards until the hand value is at least 17
-        while ($this->calculateHandValue($dealerHand) < 17) {
-            $drawnCard = $deck->drawCard();
-            if ($drawnCard !== null) {
-                $dealerHand->addCard($drawnCard);
-            }
-        }
-
-        // Save the updated deck and dealer's hand to the session
-        $session->set("bj_deck", $deck);
-        $session->set("bj_dealer_hand", $dealerHand);
-        // get session data
-        $deck = $session->get("bj_deck");
-        if (!$deck instanceof DeckOfCards) {
-            throw new Exception("Card deck not found in session.");
-        }
-        $playerHand = $session->get("bj_player_hand");
-        if (!$playerHand instanceof CardHand) {
-            throw new Exception("Player hand not found in session.");
-        }
-        $dealerHand = $session->get("bj_dealer_hand");
-        if (!$dealerHand instanceof CardHand) {
-            throw new Exception("Dealer hand not found in session.");
-        }
-
-        // Calculate the final result
-        $playerHandValue = $this->calculateHandValue($playerHand);
-        $dealerHandValue = $this->calculateHandValue($dealerHand);
-
-        // Determine the winner or if it's a tie
-        $result = "";
-        if (
-            $dealerHandValue > 21 ||
-            ($playerHandValue <= 21 && $playerHandValue > $dealerHandValue)
-        ) {
-            $playerMoney += $betAmount;
-            $result = "You win! Dealer has $dealerHandValue but you have $playerHandValue!";
-        } elseif ($playerHandValue == $dealerHandValue) {
-            $result = "It's a tie! Both you and the dealer have $playerHandValue.";
-        } else {
-            $playerMoney -= $betAmount;
-            $result = "You lose. Dealer has $dealerHandValue and you have $playerHandValue...";
-        }
-
-        // Save the updated player's money to the session
-        $session->set("bj_money", $playerMoney);
-
-        // Render the result template with the final outcome
-        $data = [
-            "playerHand" => $playerHand->getCards(),
-            "dealerHand" => $dealerHand->getCards(),
-            "result" => $result,
-            "playerMoney" => $playerMoney,
-        ];
-        return $this->render("proj/result.html.twig", $data);
-    }
-
-    #[Route("/proj/action", name: "proj_action")]
-    public function processAction(
+    private function handlePlayerActions(
         Request $request,
         SessionInterface $session
-    ): Response {
+    ): bool {
         $playerHands = $session->get("bj_player_hands");
         $deck = $session->get("bj_deck");
         $allHandsCompleted = true;
@@ -288,7 +137,7 @@ class ProjController extends AbstractController
             if ($action === "hit") {
                 $this->drawAndAddCard($deck, $hand);
                 if ($this->calculateHandValue($hand) > 21) {
-                    $hand->setStatus("bust"); // bust the hand
+                    $hand->setStatus("bust");
                 } else {
                     $allHandsCompleted = false;
                 }
@@ -302,16 +151,10 @@ class ProjController extends AbstractController
         $session->set("bj_deck", $deck);
         $session->set("bj_player_hands", $playerHands);
 
-        if ($allHandsCompleted) {
-            // all hands are completed, proceed to the results page
-            return $this->redirectToRoute("proj_result");
-        }
-
-        return $this->redirectToRoute("proj_deal");
+        return $allHandsCompleted;
     }
 
-    #[Route("/proj/results", name: "proj_result")]
-    public function showResults(SessionInterface $session): Response
+    private function renderResultsView(SessionInterface $session): Response
     {
         $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
@@ -358,6 +201,28 @@ class ProjController extends AbstractController
         ];
 
         return $this->render("proj/result.html.twig", $data);
+    }
+
+    private function dealPlayerHands(
+        int $numberOfHands,
+        DeckOfCards $deck
+    ): array {
+        $playerHands = [];
+        for ($i = 0; $i < $numberOfHands; $i++) {
+            $hand = new CardHand();
+            $this->drawAndAddCard($deck, $hand); // Deal the first card
+            $this->drawAndAddCard($deck, $hand); // Deal the second card
+            $playerHands[] = $hand;
+        }
+        return $playerHands;
+    }
+
+    private function dealDealerHand(DeckOfCards $deck): CardHand
+    {
+        $dealerHand = new CardHand();
+        $this->drawAndAddCard($deck, $dealerHand); // Deal the first card
+        $this->drawAndAddCard($deck, $dealerHand); // Deal the second card
+        return $dealerHand;
     }
 
     /**
