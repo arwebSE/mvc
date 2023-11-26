@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+error_reporting(E_ALL);
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +30,7 @@ class ProjController extends AbstractController
     {
         $session->clear();
         $session->invalidate();
-        return $this->redirectToRoute("proj");
+        return $this->render("/proj/reset.html.twig");
     }
 
     // Main Game Route
@@ -36,11 +38,23 @@ class ProjController extends AbstractController
     public function proj(SessionInterface $session, Request $request): Response
     {
         $playerMoney = $session->get("bj_money", 100);
-        if ($playerMoney <= 0) {
-            return $this->redirectToRoute("proj_reset");
+
+        // Check if the form has been submitted
+        if ($request->isMethod("POST")) {
+            $this->initializeGame($session, $request);
+            return $this->redirectToRoute("proj_deal"); // Redirect to the deal view
         }
 
-        $this->initializeGame($session, $request);
+        // Render the start game form
+        return $this->render("/proj/index.html.twig", [
+            "playerMoney" => $playerMoney,
+        ]);
+    }
+
+    // Deal Cards
+    #[Route("/proj/deal", name: "proj_deal")]
+    public function deal(SessionInterface $session): Response
+    {
         return $this->renderGameView($session);
     }
 
@@ -51,13 +65,11 @@ class ProjController extends AbstractController
         SessionInterface $session
     ): Response {
         $allHandsCompleted = $this->handlePlayerActions($request, $session);
-
         if ($allHandsCompleted) {
-            // All hands are completed, proceed to the results page
-            return $this->redirectToRoute("proj_results");
+            return $this->redirectToRoute("proj_results"); // round over
         }
 
-        return $this->redirectToRoute("proj_deal");
+        return $this->redirectToRoute("proj_deal"); // continue round
     }
 
     // Show Results
@@ -67,7 +79,6 @@ class ProjController extends AbstractController
         return $this->renderResultsView($session);
     }
 
-    // Helper Functions
     private function initializeGame(
         SessionInterface $session,
         Request $request
@@ -75,16 +86,17 @@ class ProjController extends AbstractController
         $deck = new DeckOfCards();
         $deck->shuffle();
 
+        $betAmount = $request->request->getInt("betAmount", 10);
         $numberOfHands = $request->request->get("numHands", 1);
         $numberOfHands = max(1, min(3, (int) $numberOfHands));
 
         $playerHands = $this->dealPlayerHands($numberOfHands, $deck);
         $dealerHand = $this->dealDealerHand($deck);
 
+        $session->set("bj_bet", $betAmount);
         $session->set("bj_deck", $deck);
         $session->set("bj_player_hands", $playerHands);
         $session->set("bj_dealer_hand", $dealerHand);
-        $session->set("bj_bet", $request->request->get("betAmount", 10));
     }
 
     private function renderGameView(SessionInterface $session): Response
@@ -133,18 +145,17 @@ class ProjController extends AbstractController
 
         foreach ($playerHands as $index => $hand) {
             $action = $request->request->get("action" . ($index + 1));
-
             if ($action === "hit") {
                 $this->drawAndAddCard($deck, $hand);
                 if ($this->calculateHandValue($hand) > 21) {
                     $hand->setStatus("bust");
                 } else {
-                    $allHandsCompleted = false;
+                    $allHandsCompleted = false; // There's at least one active hand
                 }
             } elseif ($action === "stand") {
                 $hand->setStatus("stand");
             } else {
-                $allHandsCompleted = false;
+                $allHandsCompleted = false; // There's at least one active hand
             }
         }
 
@@ -169,16 +180,21 @@ class ProjController extends AbstractController
             $handValue = $this->calculateHandValue($hand);
             $status = $hand->getStatus();
 
-            if ($status === "bust") {
-                $result = "Bust";
-                $playerMoney -= $betAmount;
+            if (
+                $status === "bust" ||
+                ($handValue < $dealerHandValue && !$isDealerBust)
+            ) {
+                $result = "Lose";
+                $playerMoney -= $betAmount; // Deduct bet amount if player loses
             } elseif ($isDealerBust || $handValue > $dealerHandValue) {
                 $result = "Win";
-                $playerMoney += $betAmount;
+                $playerMoney += $betAmount; // Add bet amount if player wins
             } elseif ($handValue === $dealerHandValue) {
                 $result = "Tie";
+                // No change in player's money in case of a tie
             } else {
                 $result = "Lose";
+                // Player loses bet amount
                 $playerMoney -= $betAmount;
             }
 
@@ -199,6 +215,10 @@ class ProjController extends AbstractController
             "isDealerBust" => $isDealerBust,
             "playerMoney" => $playerMoney,
         ];
+
+        if ($playerMoney <= 0) {
+            return $this->redirectToRoute("proj_reset");
+        }
 
         return $this->render("proj/result.html.twig", $data);
     }

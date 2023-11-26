@@ -31,39 +31,10 @@
                         </span>
                     </div>
                 </div>
-
-                {# Player's hands #}
-                <div class="player-hands">
-                    {% for handIndex in 1..(playerHands|length) %}
-                        <div class="player">
-                            <p>
-                                Player {{ handIndex }}
-                            </p>
-                            <div class="card unknown">
-                                <span class="bg">
-                                    <img src="{{
-                                        asset(
-                                            'img/cardback.svg'
-                                        )
-                                        }}" />
-                                </span>
-                            </div>
-                            <div class="card unknown">
-                                <span class="bg">
-                                    <img src="{{
-                                        asset(
-                                            'img/cardback.svg'
-                                        )
-                                        }}" />
-                                </span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
             </div>
         </div>
         <div class="row mt">
-            <form action="{{ path('proj_deal') }}" method="post">
+            <form action="{{ path('proj') }}" method="post">
                 <div class="form-group">
                     <label for="betAmount">Bet:</label>
                     <button class="button"
@@ -96,8 +67,8 @@
                         </option>
                     </select>
 
-                    <button type="submit" class="button primary">
-                        Deal Cards
+                    <button class="button primary" type="submit">
+                        Start Game
                     </button>
                 </div>
             </form>
