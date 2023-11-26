@@ -47,9 +47,6 @@
                 <div class="player-hands">
                     {% for handData in playerHands %}
                         <div class="player">
-                            <p>
-                                Player {{ handData.handIndex }}
-                            </p>
                             {% for card in handData.cards %}
                                 <div class="card {{
                                     card.getSuit() == 'H'
@@ -68,6 +65,14 @@
                                     </span>
                                 </div>
                             {% endfor %}
+                            <div class="data-row">
+                                <p>
+                                    Player {{ handData.handIndex }}
+                                </p>
+                                <p class="right">
+                                    {{ handData.handValue }}
+                                </p>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

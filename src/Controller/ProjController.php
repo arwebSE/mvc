@@ -37,12 +37,19 @@ class ProjController extends AbstractController
     #[Route("/proj", name: "proj")]
     public function proj(SessionInterface $session, Request $request): Response
     {
-        $playerMoney = $session->get("bj_money", 100);
+        $playerMoney = $session->get("bj_money", 1);
 
-        // Check if the form has been submitted
-        if ($request->isMethod("POST")) {
-            $this->initializeGame($session, $request);
-            return $this->redirectToRoute("proj_deal"); // Redirect to the deal view
+        if ($playerMoney <= 0) {
+            $this->addFlash(
+                "warning",
+                "You ran out of money! Click Reset above in the navbar."
+            );
+        } else {
+            // Check if the form has been submitted
+            if ($request->isMethod("POST")) {
+                $this->initializeGame($session, $request);
+                return $this->redirectToRoute("proj_deal"); // Redirect to the deal view
+            }
         }
 
         // Render the start game form
@@ -144,6 +151,14 @@ class ProjController extends AbstractController
         $allHandsCompleted = true;
 
         foreach ($playerHands as $index => $hand) {
+            // Skip processing if hand is already busted or stood
+            if (
+                $hand->getStatus() === "bust" ||
+                $hand->getStatus() === "stand"
+            ) {
+                continue;
+            }
+
             $action = $request->request->get("action" . ($index + 1));
             if ($action === "hit") {
                 $this->drawAndAddCard($deck, $hand);
@@ -169,9 +184,13 @@ class ProjController extends AbstractController
     {
         $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
-        $playerMoney = $session->get("bj_money");
+        $playerMoney = $session->get("bj_money", 100);
         $betAmount = $session->get("bj_bet", 10);
 
+        // dealer keep drawing until 17 or bust
+        while ($this->calculateHandValue($dealerHand) < 17) {
+            $this->drawAndAddCard($session->get("bj_deck"), $dealerHand);
+        }
         $dealerHandValue = $this->calculateHandValue($dealerHand);
         $isDealerBust = $dealerHandValue > 21;
 
@@ -192,10 +211,6 @@ class ProjController extends AbstractController
             } elseif ($handValue === $dealerHandValue) {
                 $result = "Tie";
                 // No change in player's money in case of a tie
-            } else {
-                $result = "Lose";
-                // Player loses bet amount
-                $playerMoney -= $betAmount;
             }
 
             $results[] = [
@@ -204,6 +219,10 @@ class ProjController extends AbstractController
                 "handValue" => $handValue,
                 "result" => $result,
             ];
+        }
+
+        if ($playerMoney <= 0) {
+            $this->addFlash("warning", "You ran out of money!");
         }
 
         $session->set("bj_money", $playerMoney);
@@ -215,10 +234,6 @@ class ProjController extends AbstractController
             "isDealerBust" => $isDealerBust,
             "playerMoney" => $playerMoney,
         ];
-
-        if ($playerMoney <= 0) {
-            return $this->redirectToRoute("proj_reset");
-        }
 
         return $this->render("proj/result.html.twig", $data);
     }
