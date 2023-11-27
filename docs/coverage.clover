@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1701076969">
-  <project timestamp="1701076969">
+<coverage generated="1701087016">
+  <project timestamp="1701087016">
     <file name="/Users/arweb/Documents/Repos/dbwebb/mvc/me/report/src/Card/Card.php">
       <class name="App\Card\Card" namespace="global">
         <metrics complexity="5" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="17" coveredelements="17"/>
