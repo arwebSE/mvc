@@ -37,7 +37,7 @@ class ProjController extends AbstractController
     #[Route("/proj", name: "proj")]
     public function proj(SessionInterface $session, Request $request): Response
     {
-        $playerMoney = $session->get("bj_money", 1);
+        $playerMoney = $session->get("bj_money", 100);
 
         if ($playerMoney <= 0) {
             $this->addFlash(
@@ -93,9 +93,16 @@ class ProjController extends AbstractController
         $deck = new DeckOfCards();
         $deck->shuffle();
 
-        $betAmount = $request->request->getInt("betAmount", 10);
         $numberOfHands = $request->request->get("numHands", 1);
         $numberOfHands = max(1, min(3, (int) $numberOfHands));
+
+        // Calculate the bet amount per hand
+        $betAmount = $request->request->getInt("betAmount", 10);
+        $totalBetAmount = $request->request->getInt("betAmount", 10);
+        $betPerHand = $totalBetAmount / $numberOfHands;
+
+        // Store the bet per hand in the session
+        $session->set("bj_bet_per_hand", $betPerHand);
 
         $playerHands = $this->dealPlayerHands($numberOfHands, $deck);
         $dealerHand = $this->dealDealerHand($deck);
@@ -186,6 +193,7 @@ class ProjController extends AbstractController
         $dealerHand = $session->get("bj_dealer_hand");
         $playerMoney = $session->get("bj_money", 100);
         $betAmount = $session->get("bj_bet", 10);
+        $betPerHand = $session->get("bj_bet_per_hand", 10);
 
         // dealer keep drawing until 17 or bust
         while ($this->calculateHandValue($dealerHand) < 17) {
@@ -204,13 +212,14 @@ class ProjController extends AbstractController
                 ($handValue < $dealerHandValue && !$isDealerBust)
             ) {
                 $result = "Lose";
-                $playerMoney -= $betAmount; // Deduct bet amount if player loses
+                $playerMoney -= $betPerHand;
             } elseif ($isDealerBust || $handValue > $dealerHandValue) {
                 $result = "Win";
-                $playerMoney += $betAmount; // Add bet amount if player wins
+                $playerMoney += $betPerHand;
             } elseif ($handValue === $dealerHandValue) {
                 $result = "Tie";
-                // No change in player's money in case of a tie
+            } else {
+                $this->addFlash("warning", "Something weird happened!");
             }
 
             $results[] = [

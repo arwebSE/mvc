@@ -82,8 +82,9 @@
         <div class="row mt">
             <form action="{{ path('proj_action') }}" method="post">
                 {% for handData in playerHands %}
+                    {% set fieldDisabled = handData.status == 'stand' %}
                     <div class="hand-actions">
-                        <fieldset>
+                        <fieldset {{ fieldDisabled ? 'disabled' : '' }}>
                             <legend>
                                 Player {{ handData.handIndex }}
                             </legend>
@@ -91,12 +92,18 @@
                                 <input type="radio"
                                     name="action{{ handData.handIndex }}"
                                     value="hit"
-                                    required />Hit
+                                    required
+                                    {{ fieldDisabled ? 'disabled' : '' }} />Hit
                             </label>
                             <label>
                                 <input type="radio"
                                     name="action{{ handData.handIndex }}"
-                                    value="stand" />Stand
+                                    value="stand"
+                                    {{
+                                    fieldDisabled
+                                        ? 'disabled'
+                                        : ''
+                                    }} />Stand
                             </label>
                         </fieldset>
                     </div>
@@ -104,6 +111,7 @@
 
                 <button class="button primary" type="submit">Proceed</button>
             </form>
+
             <a class="button danger" href="{{ path('proj') }}">Start Over</a>
         </div>
         <div class="bet-container mt">
