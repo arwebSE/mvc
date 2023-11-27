@@ -446,20 +446,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Controller-ProjController.html#method_proj"
         },                {
-            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Aplay\u0028\u0029",
-            "name": "play",
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Adeal\u0028\u0029",
+            "name": "deal",
             "summary": "",
-            "url": "classes/App-Controller-ProjController.html#method_play"
-        },                {
-            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Ahit\u0028\u0029",
-            "name": "hit",
-            "summary": "",
-            "url": "classes/App-Controller-ProjController.html#method_hit"
-        },                {
-            "fqsen": "\\App\\Controller\\ProjController\u003A\u003Astand\u0028\u0029",
-            "name": "stand",
-            "summary": "",
-            "url": "classes/App-Controller-ProjController.html#method_stand"
+            "url": "classes/App-Controller-ProjController.html#method_deal"
         },                {
             "fqsen": "\\App\\Controller\\ProjController\u003A\u003AprocessAction\u0028\u0029",
             "name": "processAction",
@@ -470,6 +460,36 @@ Search.appendIndex(
             "name": "showResults",
             "summary": "",
             "url": "classes/App-Controller-ProjController.html#method_showResults"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AinitializeGame\u0028\u0029",
+            "name": "initializeGame",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_initializeGame"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003ArenderGameView\u0028\u0029",
+            "name": "renderGameView",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_renderGameView"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AhandlePlayerActions\u0028\u0029",
+            "name": "handlePlayerActions",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_handlePlayerActions"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003ArenderResultsView\u0028\u0029",
+            "name": "renderResultsView",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_renderResultsView"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AdealPlayerHands\u0028\u0029",
+            "name": "dealPlayerHands",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_dealPlayerHands"
+        },                {
+            "fqsen": "\\App\\Controller\\ProjController\u003A\u003AdealDealerHand\u0028\u0029",
+            "name": "dealDealerHand",
+            "summary": "",
+            "url": "classes/App-Controller-ProjController.html#method_dealDealerHand"
         },                {
             "fqsen": "\\App\\Controller\\ProjController\u003A\u003AcalculateHandValue\u0028\u0029",
             "name": "calculateHandValue",
