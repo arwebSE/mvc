@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Playball");
 
 :root {
-    --primary-color: #ffcc00;
-    --secondary-color: rgb(232, 232, 232);
-    --tertiary-color: #fff;
-    --quaternary-color: #333;
+    --primary-color: #0073ff;
+    --secondary-color: rgb(42, 42, 42);
+    --tertiary-color: #e7e6e6;
+    --quaternary-color: #ffffff;
     --quinary-color: #ddd;
     --senary-color: #ccc;
     --system-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -102,7 +102,7 @@ p {
 
 nav {
     border-bottom: 1px solid var(--senary-color);
-    background-color: var(--secondary-color);
+    background-color: var(--tertiary-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -117,7 +117,7 @@ nav {
             margin: 0 10px;
             font-size: 16px;
             a {
-                color: var(--quaternary-color);
+                color: var(--secondary-color);
                 text-decoration: none;
                 transition: all 0.3s ease-in-out;
                 &:hover {
@@ -398,8 +398,9 @@ footer {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.052);
     border-radius: 5px 5px 0 0;
     border: 1px solid var(--quinary-color);
+    color: var(--secondary-color);
     a {
-        color: #333;
+        color: var(--secondary-color);
         text-decoration: none;
     }
     .footer-left {
@@ -464,7 +465,7 @@ footer {
 .table {
     width: 100%;
     height: 100%;
-    background-color: #2d7c3b;
+    background-color: #2d6c7c;
     border-radius: 100px;
     display: flex;
     flex-direction: column;
