@@ -482,6 +482,43 @@
             </ul>
         </p>
     </article>
+
+    <article id="kmom10">
+        <h2>
+            Kmom10 / Proj
+        </h2>
+
+        <p>
+            Krav 1-3 implementation: Det var tufft att implementera mitt
+            projekt. Jag valde att fortsätta på kortspelet 21, men bättra det
+            genom att kunna hantera flera spelarhänder samt pengar / betting.
+            Det svåraste var att kunna ha flera händer oberoende av varandra.
+            Jag valde att helt och hållet omstrukturera min controller från 21,
+            så mestadels av koden kunde inte återanvändas. Det jag återanvände
+            var kort klasserna Card, CardHand, DeckOfCards. Det enda jag lade
+            till på de klasserna var en sträng för att kolla om korthanden
+            (CardHand) var aktivt spelbar (&quot;active&quot;) eller
+            &quot;bust&quot;.
+        </p>
+        <p>
+            Allmänt om projektet: Det var allmänt svårt att implementera.
+            Problemen löstes i tur och ordning genom spel flow testande. Detta
+            var ganska kaotiskt för att det var som att laga ett sjunkande
+            skepp. Men till sist så fick jag till en relativt fungerande
+            produkt. Jag tycker det var ett rimligt projekt för denna kurs.
+        </p>
+        <p>
+            Tankar kring kursen: Jag är relativt nöjd med kursen. Jag anser att
+            materialet var bra, till exempel var det ganska enkelt att förstå
+            varje &quot;tool&quot; som behövde läggas till i Symfony. Däremot
+            tycker jag personligen inte så mycket om att arbeta med PHP och
+            ramverk. Jag tycker andra språk och ramverk är bekvämare att jobba
+            med. Men överlag tycker jag att kursen var bra. Jag gillade delen
+            där vi lärde oss använda SQLite med ORM och Symfony. Men jag hade
+            hellre lärt mig Laravel, eftersom efterfrågan på arbetsmarknaden är
+            stor för det ramverket.
+        </p>
+    </article>
 {% endblock %}
 
 {% block sidebar %}
@@ -496,6 +533,7 @@
             <li><a href="#kmom04">kmom04</a></li>
             <li><a href="#kmom05">kmom05</a></li>
             <li><a href="#kmom06">kmom06</a></li>
+            <li><a href="#kmom10">kmom10</a></li>
         </ul>
     </aside>
 {% endblock %}
