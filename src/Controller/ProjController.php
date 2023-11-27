@@ -192,7 +192,6 @@ class ProjController extends AbstractController
         $playerHands = $session->get("bj_player_hands");
         $dealerHand = $session->get("bj_dealer_hand");
         $playerMoney = $session->get("bj_money", 100);
-        $betAmount = $session->get("bj_bet", 10);
         $betPerHand = $session->get("bj_bet_per_hand", 10);
 
         // dealer keep drawing until 17 or bust

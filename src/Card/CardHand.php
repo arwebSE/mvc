@@ -9,7 +9,7 @@ class CardHand
      */
     private array $cards = [];
 
-    private $status = "active";
+    private string $status = "active";
 
     public function __construct()
     {
